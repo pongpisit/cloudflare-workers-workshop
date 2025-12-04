@@ -1,8 +1,8 @@
 # Module 2: Create Your First Worker (Hello World)
 
-In this module, you will create your first Cloudflare Worker. We'll do this two ways - first using the website (easy), then using the command line (recommended for real projects).
+In this module, you will create your first Cloudflare Worker using the command line.
 
-**Time needed: 45 minutes**
+**Time needed: 30 minutes**
 
 ---
 
@@ -14,79 +14,7 @@ A Worker is a small program that runs on Cloudflare's servers around the world. 
 
 ---
 
-## Part A: Create a Worker Using the Website (Easy Method)
-
-This is the easiest way to create your first Worker.
-
-### Step 1: Open Cloudflare Dashboard
-
-**Copy this link and paste it in your browser:**
-```
-https://dash.cloudflare.com/
-```
-
-Log in with your email and password.
-
-### Step 2: Go to Workers & Pages
-
-1. Look at the **left side** of the screen
-2. Click on **"Workers & Pages"**
-
-### Step 3: Create a New Worker
-
-1. Click the blue **"Create"** button
-2. Click **"Create Worker"**
-3. You'll see a name like `my-worker-abc123` - you can keep this or change it
-4. Click the blue **"Deploy"** button
-
-### Step 4: See Your Worker
-
-After clicking Deploy:
-
-1. You'll see a message saying your Worker was deployed
-2. Look for a URL that looks like: `https://my-worker-abc123.yourname.workers.dev`
-3. **Click on that URL** - it will open in a new tab
-4. You should see the text: **"Hello World!"**
-
-🎉 **Congratulations!** You just created your first Worker!
-
-### Step 5: Edit Your Worker
-
-Let's change what your Worker says:
-
-1. Go back to the Cloudflare Dashboard tab
-2. Click **"Edit code"** button
-3. You'll see code that looks like this:
-
-```javascript
-export default {
-  async fetch(request, env, ctx) {
-    return new Response('Hello World!');
-  },
-};
-```
-
-4. **Delete ALL the code** in the editor
-5. **Copy and paste this new code:**
-
-```javascript
-export default {
-  async fetch(request, env, ctx) {
-    return new Response('Hello! This is my first Cloudflare Worker!');
-  },
-};
-```
-
-6. Click the blue **"Save and deploy"** button at the top right
-7. Click your Worker URL again to see the change
-
-> ✅ **Done!** You edited your Worker and it now shows your custom message.
-
----
-
-## Part B: Create a Worker Using PowerShell (Recommended Method)
-
-This method is better for real projects. Follow each step exactly.
+## Part A: Create Your First Worker
 
 ### Step 1: Open PowerShell
 
@@ -248,7 +176,7 @@ Published my-first-worker (1.23 sec)
 
 ---
 
-## Part C: Make Your Worker More Interesting
+## Part B: Make Your Worker More Interesting
 
 Let's make your Worker return JSON data (like a real API).
 
@@ -310,7 +238,7 @@ Visit your Worker URL to see the JSON response live!
 
 ---
 
-## Part D: Add Multiple Pages to Your Worker
+## Part C: Add Multiple Pages to Your Worker
 
 Let's make your Worker respond differently based on the URL.
 
@@ -387,21 +315,18 @@ npm run deploy
 
 ## ✅ What You Learned
 
-In this module, you learned how to:
-
 | Skill | ✓ |
 |-------|---|
-| Create a Worker using the Cloudflare website | ☐ |
-| Create a Worker using PowerShell | ☐ |
-| Run a Worker locally on your computer | ☐ |
+| Create a Worker project | ☐ |
+| Run a Worker locally | ☐ |
 | Deploy a Worker to the internet | ☐ |
-| Return plain text from a Worker | ☐ |
-| Return JSON from a Worker | ☐ |
+| Return plain text | ☐ |
+| Return JSON | ☐ |
 | Handle different URL paths | ☐ |
 
 ---
 
-## Quick Reference: Commands You Used
+## Quick Reference
 
 | What You Want to Do | Command |
 |---------------------|---------|
@@ -418,4 +343,4 @@ In this module, you learned how to:
 
 **Great job!** You've created and deployed your first Cloudflare Worker!
 
-**Next:** [Module 3: Workers Basics →](./03-workers-basics.md)
+**Next:** [Module 3: Connect to Database (D1) →](./03-d1-database.md)
