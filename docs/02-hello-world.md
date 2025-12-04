@@ -58,7 +58,7 @@ The tool will ask you some questions. **Type your answers exactly as shown:**
 - Press **Enter**
 
 **Question 4:** `Do you want to use git for version control?`
-- Type `yes` and press **Enter**
+- Type `no` and press **Enter**
 
 **Question 5:** `Do you want to deploy your application?`
 - Type `no` and press **Enter** (we'll deploy later)
