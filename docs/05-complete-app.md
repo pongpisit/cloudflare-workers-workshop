@@ -227,12 +227,12 @@ const HTML_PAGE = `<!DOCTYPE html>
 </head>
 <body>
   <div class="container">
-    <h1>🚀 My Cloudflare App</h1>
+    <h1>My Cloudflare App</h1>
     <p class="subtitle">AI Chat + Image Gallery</p>
     
     <div class="tabs">
-      <button class="tab active" onclick="showTab('chat')">🤖 AI Chat</button>
-      <button class="tab" onclick="showTab('gallery')">🖼️ Gallery</button>
+      <button class="tab active" onclick="showTab('chat')">AI Chat</button>
+      <button class="tab" onclick="showTab('gallery')">Gallery</button>
     </div>
     
     <!-- Chat Panel -->
