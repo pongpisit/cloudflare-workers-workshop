@@ -278,7 +278,7 @@ const HTML_PAGE = `
 </head>
 <body>
   <div class="container">
-    <h1>🤖 AI Chatbot</h1>
+    <h1>AI Chatbot</h1>
     <p class="subtitle">Try different AI models and see how they respond!</p>
 
     <div class="model-selector">
