@@ -469,8 +469,8 @@ Want to add more models? Edit the HTML in `src/index.js`:
 Find the `model-buttons` section and add more buttons:
 
 ```html
-<button class="model-btn" data-model="@cf/deepseek-ai/deepseek-math-7b-instruct">
-  DeepSeek Math
+<button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">
+  Google Gemma
 </button>
 ```
 

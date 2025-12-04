@@ -411,7 +411,7 @@ In `wrangler.jsonc`, change:
 
 Find this section in the HTML and add more buttons:
 ```html
-<button class="model-btn" data-model="@cf/deepseek-ai/deepseek-math-7b-instruct">DeepSeek Math</button>
+<button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">Google Gemma</button>
 ```
 
 ### Change Colors
