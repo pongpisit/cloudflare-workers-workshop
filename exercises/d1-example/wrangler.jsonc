@@ -1,0 +1,16 @@
+{
+  "name": "todo-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-01-01",
+  
+  // D1 Database binding
+  // Replace <YOUR-DATABASE-ID> with your actual database ID after running:
+  // npx wrangler d1 create todo-db
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "todo-db",
+      "database_id": "<YOUR-DATABASE-ID>"
+    }
+  ]
+}
