@@ -159,7 +159,7 @@ Now let's put your Worker on the internet so anyone can see it.
 ```powershell
 npm run deploy
 ```
-
+**Choose your lab account (if any)**
 **You'll see something like:**
 ```
 Published my-first-worker (1.23 sec)
