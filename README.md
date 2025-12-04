@@ -1,16 +1,18 @@
 # Cloudflare Workers Workshop
 
-Build apps with **Cloudflare Workers** and **AI**. Complete in **2 hours**.
+Learn to build applications with **Cloudflare Workers** and **AI**. Complete in **2 hours**.
 
 ---
 
-## What You'll Build
+## What You Will Learn
 
-| Step | What You Create |
-|------|-----------------|
-| 1 | **Personal Profile Page** - like Linktree |
-| 2 | **Photo Sharing App** - like mini Instagram |
-| 3 | **AI Chatbot** - try different AI models! |
+| Module | Topic |
+|--------|-------|
+| 1 | Setup your development environment |
+| 2 | Create Workers, return text/JSON/HTML |
+| 3 | Store and serve files with R2 |
+| 4 | Build AI chatbot with Workers AI |
+| 5 | Complete app with all features |
 
 ---
 
@@ -19,16 +21,16 @@ Build apps with **Cloudflare Workers** and **AI**. Complete in **2 hours**.
 | # | Module | Time | Description |
 |---|--------|------|-------------|
 | 1 | [Setup](./docs/01-prerequisites.md) | 20 min | Install Node.js, Wrangler, VS Code |
-| 2 | [Profile Page](./docs/02-hello-world.md) | 25 min | Build a personal profile page |
-| 3 | [Photo App](./docs/03-r2-images.md) | 30 min | Build a photo sharing app with R2 |
+| 2 | [Hello World](./docs/02-hello-world.md) | 25 min | Learn Worker basics step by step |
+| 3 | [R2 Storage](./docs/03-r2-images.md) | 30 min | Store and serve images with R2 |
 | 4 | [AI Chatbot](./docs/04-ai-chatbot.md) | 40 min | Build AI chat, try different models |
-| 5 | [Complete App](./docs/05-complete-app.md) | 10 min | Clone & deploy everything! |
+| 5 | [Complete App](./docs/05-complete-app.md) | 10 min | Clone and deploy everything |
 
 **Total Time: ~2 hours**
 
-### 🚀 Just want the final app?
+### Want the final app?
 
-Skip to [Module 5: Complete App](./docs/05-complete-app.md) - clone and deploy in 10 minutes!
+Skip to [Module 5: Complete App](./docs/05-complete-app.md) - clone and deploy in 10 minutes.
 
 ---
 

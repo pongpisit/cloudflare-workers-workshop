@@ -1,18 +1,19 @@
-# Module 2: Build Your Personal Profile Page
+# Module 2: Hello World
 
-In this module, you will build a **personal profile page** - like a mini Linktree!
+In this module, you will learn the basics of Cloudflare Workers step by step.
 
 **Time needed: 25 minutes**
 
 ---
 
-## What You'll Build
+## What You Will Learn
 
-A personal profile page with:
-- Your name and bio
-- Links to your social media
-- Beautiful design
-- Multiple pages (Home, About)
+- Create a Worker project
+- Understand the basic code structure
+- Return text responses
+- Return JSON responses
+- Handle different URL paths
+- Test locally and deploy
 
 ---
 
@@ -30,19 +31,19 @@ cd $HOME\Documents\cloudflare-projects
 ```
 
 ```powershell
-npm create cloudflare@latest -- my-profile
+npm create cloudflare@latest -- my-first-worker
 ```
 
 **Answer the questions:**
-- Start with → **Hello World example**
-- Template → **Hello World Worker**
-- Language → **JavaScript**
-- Git → **yes**
-- Deploy → **no**
+- Start with → Hello World example
+- Template → Worker only
+- Language → JavaScript
+- Git → no
+- Deploy → no
 
 **Go into the project:**
 ```powershell
-cd my-profile
+cd my-first-worker
 ```
 
 **Open in VS Code:**
@@ -52,167 +53,243 @@ code .
 
 ---
 
-## Step 2: Create Your Profile Page
+## Step 2: Understand the Basic Code
 
-**Open `src/index.js` and replace ALL the code with:**
+**Open `src/index.js` in VS Code.**
+
+You will see this code:
 
 ```javascript
 export default {
-  async fetch(request) {
-    return new Response(HTML, {
-      headers: { "content-type": "text/html" }
-    });
-  }
+  async fetch(request, env, ctx) {
+    return new Response('Hello World!');
+  },
 };
-
-const HTML = `<!DOCTYPE html>
-<html>
-<head>
-  <title>My Profile</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 50px;
-    }
-    h1 { color: #333; margin-bottom: 10px; }
-    .title { color: #666; margin-bottom: 20px; }
-    .bio { color: #555; line-height: 1.6; margin-bottom: 30px; }
-    .links { display: flex; flex-direction: column; gap: 10px; }
-    .link {
-      display: block;
-      padding: 12px 20px;
-      background: #f5f5f5;
-      border-radius: 10px;
-      color: #333;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .link:hover {
-      background: #667eea;
-      color: white;
-      transform: translateY(-2px);
-    }
-    .footer { margin-top: 30px; color: #999; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <div class="avatar">👤</div>
-    <h1>Your Name</h1>
-    <p class="title">Web Developer | Designer</p>
-    <p class="bio">
-      Hello! I'm learning to build apps with Cloudflare Workers. 
-      This is my personal profile page running on the edge!
-    </p>
-    <div class="links">
-      <a href="https://github.com" class="link">🐙 GitHub</a>
-      <a href="https://linkedin.com" class="link">💼 LinkedIn</a>
-      <a href="https://twitter.com" class="link">🐦 Twitter</a>
-      <a href="mailto:hello@example.com" class="link">📧 Email Me</a>
-    </div>
-    <p class="footer">Powered by Cloudflare Workers ⚡</p>
-  </div>
-</body>
-</html>`;
 ```
 
-**Save the file (Ctrl + S)**
+**What does this code do?**
+
+| Part | Meaning |
+|------|---------|
+| `export default` | Creates your Worker |
+| `async fetch(request, env, ctx)` | Runs when someone visits your Worker |
+| `request` | Information about the visitor (URL, method, etc.) |
+| `return new Response('Hello World!')` | Sends text back to the visitor |
 
 ---
 
-## Step 3: Test Your Profile Page
+## Step 3: Test Your Worker Locally
 
 **In PowerShell, run:**
 ```powershell
 npm run dev
 ```
 
-**Open your browser:**
+**You will see:**
+```
+Ready on http://localhost:8787
+```
+
+**Open your browser and go to:**
 ```
 http://localhost:8787
 ```
 
-You should see your beautiful profile page!
+**You should see:** Hello World!
 
 ---
 
-## Step 4: Customize Your Profile
+## Step 4: Change the Response Text
 
-**Edit the HTML in `src/index.js` to personalize:**
+**In VS Code, change the code to:**
 
-### Change Your Name
-```html
-<h1>Your Name</h1>
+```javascript
+export default {
+  async fetch(request, env, ctx) {
+    return new Response('Hello! This is my first Cloudflare Worker!');
+  },
+};
 ```
 
-### Change Your Title
-```html
-<p class="title">Web Developer | Designer</p>
-```
+**Save the file (Ctrl + S)**
 
-### Change Your Links
-```html
-<a href="https://github.com/YOUR-USERNAME" class="link">🐙 GitHub</a>
-```
+**Refresh your browser (F5)**
 
-### Change Your Avatar Emoji
-Find `<div class="avatar">👤</div>` and change to:
-- 👨‍💻 (developer)
-- 👩‍💼 (professional)
-- 🧑‍🎨 (designer)
-
-**Save and refresh your browser!**
+You should see your new message!
 
 ---
 
-## Step 5: Deploy Your Profile
+## Step 5: Return JSON Data
 
-**Stop the local server** (Ctrl + C)
+Workers can return JSON data like a real API.
+
+**Replace ALL the code with:**
+
+```javascript
+export default {
+  async fetch(request, env, ctx) {
+    const data = {
+      message: "Hello from my Worker!",
+      timestamp: new Date().toISOString(),
+      status: "ok"
+    };
+
+    return new Response(JSON.stringify(data, null, 2), {
+      headers: {
+        "content-type": "application/json"
+      }
+    });
+  },
+};
+```
+
+**Save and refresh your browser.**
+
+You should see JSON data:
+```json
+{
+  "message": "Hello from my Worker!",
+  "timestamp": "2024-12-04T12:00:00.000Z",
+  "status": "ok"
+}
+```
+
+---
+
+## Step 6: Handle Different URL Paths
+
+Let's make your Worker respond differently based on the URL.
+
+**Replace ALL the code with:**
+
+```javascript
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    // Home page
+    if (path === "/" || path === "") {
+      return new Response("Welcome to my Worker!");
+    }
+
+    // About page
+    if (path === "/about") {
+      return new Response("This is the about page.");
+    }
+
+    // API endpoint
+    if (path === "/api") {
+      const data = { status: "ok", message: "API is working" };
+      return new Response(JSON.stringify(data), {
+        headers: { "content-type": "application/json" }
+      });
+    }
+
+    // Page not found
+    return new Response("Page not found", { status: 404 });
+  },
+};
+```
+
+**Save and test these URLs:**
+
+| URL | Result |
+|-----|--------|
+| http://localhost:8787/ | Welcome to my Worker! |
+| http://localhost:8787/about | This is the about page. |
+| http://localhost:8787/api | JSON data |
+| http://localhost:8787/xyz | Page not found |
+
+---
+
+## Step 7: Return HTML Page
+
+Workers can return full HTML pages.
+
+**Replace ALL the code with:**
+
+```javascript
+export default {
+  async fetch(request, env, ctx) {
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <title>My First Worker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { color: #f38020; }
+    p { color: #666; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <h1>Hello from Cloudflare Workers!</h1>
+  <p>This page is served from the edge, close to you.</p>
+  <p>Current time: ${new Date().toLocaleString()}</p>
+</body>
+</html>`;
+
+    return new Response(html, {
+      headers: { "content-type": "text/html" }
+    });
+  },
+};
+```
+
+**Save and refresh your browser.**
+
+You should see a styled HTML page!
+
+---
+
+## Step 8: Deploy Your Worker
+
+**Stop the local server** (press Ctrl + C in PowerShell)
 
 **Deploy to the internet:**
 ```powershell
 npm run deploy
 ```
 
-🎉 **Your profile page is now live!** Share the URL with friends!
+**You will see:**
+```
+Published my-first-worker
+  https://my-first-worker.YOUR-SUBDOMAIN.workers.dev
+```
+
+**Copy the URL and open it in your browser.**
+
+Your Worker is now live on the internet!
 
 ---
 
-## ✅ What You Learned
+## What You Learned
 
-| Skill | ✓ |
-|-------|---|
-| Create a Worker project | ☐ |
-| Build HTML pages | ☐ |
-| Style with CSS | ☐ |
-| Deploy to the internet | ☐ |
+| Skill | Done |
+|-------|------|
+| Create a Worker project | |
+| Return text responses | |
+| Return JSON responses | |
+| Handle different URL paths | |
+| Return HTML pages | |
+| Deploy to the internet | |
+
+---
+
+## Key Concepts
+
+| Concept | Description |
+|---------|-------------|
+| `new Response(body)` | Send a response to the visitor |
+| `request.url` | Get the URL the visitor requested |
+| `headers` | Set response type (text, JSON, HTML) |
+| `status: 404` | Set HTTP status code |
 
 ---
 
@@ -223,12 +300,12 @@ npm run deploy
 | `npm create cloudflare@latest -- name` | Create project |
 | `npm run dev` | Run locally |
 | `npm run deploy` | Deploy to internet |
-| `Ctrl + C` | Stop server |
+| Ctrl + C | Stop server |
 
 ---
 
 ## Next Module
 
-**Awesome!** You've built a real profile page!
+You now understand the basics of Cloudflare Workers!
 
-**Next:** [Module 3: Photo Sharing App →](./03-r2-images.md)
+**Next:** [Module 3: Add Image Storage with R2](./03-r2-images.md)
