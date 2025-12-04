@@ -176,7 +176,7 @@ async function showGallery(env) {
   </style>
 </head>
 <body>
-  <h1>🖼️ My Image Gallery</h1>
+  <h1>My Image Gallery</h1>
   
   <div class="upload-form">
     <h3>Upload a New Image</h3>
