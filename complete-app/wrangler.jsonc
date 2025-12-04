@@ -1,0 +1,14 @@
+{
+  "name": "my-complete-app",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-01",
+  "ai": {
+    "binding": "AI"
+  },
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "my-app-media"
+    }
+  ]
+}

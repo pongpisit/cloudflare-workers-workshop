@@ -22,8 +22,13 @@ Build apps with **Cloudflare Workers** and **AI**. Complete in **2 hours**.
 | 2 | [Hello World](./docs/02-hello-world.md) | 20 min | Create your first Worker |
 | 3 | [Image Gallery](./docs/03-r2-images.md) | 30 min | Store images in R2, display in Worker |
 | 4 | [AI Chatbot](./docs/04-ai-chatbot.md) | 40 min | Build AI chat, try different models |
+| 5 | [Complete App](./docs/05-complete-app.md) | 10 min | Clone & deploy everything! |
 
 **Total Time: ~2 hours**
+
+### 🚀 Just want the final app?
+
+Skip to [Module 5: Complete App](./docs/05-complete-app.md) - clone and deploy in 10 minutes!
 
 ---
 

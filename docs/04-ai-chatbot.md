@@ -503,6 +503,10 @@ Find the `model-buttons` section and add more buttons:
 
 ---
 
-## Thank You!
+---
 
-Thank you for completing this workshop! 🙏
+## Next Module
+
+**Want everything in one app?**
+
+**Next:** [Module 5: Complete App - Clone & Deploy →](./05-complete-app.md)
