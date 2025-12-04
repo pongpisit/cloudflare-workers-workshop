@@ -44,15 +44,18 @@ code .
 
 ```json
 {
-  "name": "my-first-worker",
-  "main": "src/index.js",
-  "compatibility_date": "2024-11-01",
-  "r2_buckets": [
-    {
-      "binding": "IMAGES",
-      "bucket_name": "my-images"
-    }
-  ]
+	"name": "my-first-worker",
+	"main": "src/index.js",
+	"compatibility_date": "2025-12-02",
+	"observability": {
+		"enabled": true
+	},
+	"r2_buckets": [
+		{
+			"bucket_name": "my-images",
+			"binding": "IMAGES"
+		}
+	]
 }
 ```
 
