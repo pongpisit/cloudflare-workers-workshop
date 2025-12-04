@@ -1,27 +1,27 @@
 # Cloudflare Workers Workshop
 
-Build your own **AI Chatbot** with image/video storage. Complete in **2 hours**.
+Build apps with **Cloudflare Workers** and **AI**. Complete in **2 hours**.
 
 ---
 
 ## What You'll Build
 
-A chatbot application that:
-- 🤖 Uses AI to answer questions (Workers AI)
-- 🖼️ Stores and displays images/videos (R2 Storage)
-- 🌍 Runs globally on Cloudflare's edge network
+| Step | What You Create |
+|------|-----------------|
+| 1 | Simple "Hello World" website |
+| 2 | Image gallery using R2 storage |
+| 3 | AI chatbot - try different AI models! |
 
 ---
 
 ## Workshop Modules
 
-| # | Module | Time | What You'll Build |
-|---|--------|------|-------------------|
-| 1 | [Setup Your Computer](./docs/01-prerequisites.md) | 20 min | Install required software |
-| 2 | [Your First Worker](./docs/02-hello-world.md) | 20 min | Hello World app |
-| 3 | [AI Chatbot](./docs/03-ai-chatbot.md) | 40 min | LLM-powered chatbot |
-| 4 | [Add Image Storage](./docs/04-r2-storage.md) | 30 min | Store images & videos |
-| 5 | [Deploy to Production](./docs/05-deploy.md) | 10 min | Go live! |
+| # | Module | Time | Description |
+|---|--------|------|-------------|
+| 1 | [Setup](./docs/01-prerequisites.md) | 20 min | Install Node.js, Wrangler, VS Code |
+| 2 | [Hello World](./docs/02-hello-world.md) | 20 min | Create your first Worker |
+| 3 | [Image Gallery](./docs/03-r2-images.md) | 30 min | Store images in R2, display in Worker |
+| 4 | [AI Chatbot](./docs/04-ai-chatbot.md) | 40 min | Build AI chat, try different models |
 
 **Total Time: ~2 hours**
 
@@ -37,23 +37,21 @@ A chatbot application that:
 
 ## Quick Start
 
-**Step 1:** Go to [Module 1: Setup](./docs/01-prerequisites.md)
-
-**Step 2:** Follow each step exactly as shown
-
-**Step 3:** Copy and paste the code - no typing needed!
+1. Go to [Module 1: Setup](./docs/01-prerequisites.md)
+2. Follow each step exactly
+3. Copy and paste the code - no typing needed!
 
 ---
 
 ## Quick Reference
 
-| What You Want to Do | Command |
-|---------------------|---------|
-| Create new project | `npm create cloudflare@latest -- project-name` |
-| Run locally | `npm run dev` |
-| Deploy to internet | `npm run deploy` |
-| Create storage bucket | `npx wrangler r2 bucket create bucket-name` |
-| Check if logged in | `wrangler whoami` |
+| Command | What It Does |
+|---------|--------------|
+| `npm create cloudflare@latest -- name` | Create new project |
+| `npm run dev` | Run locally |
+| `npm run deploy` | Deploy to internet |
+| `npx wrangler r2 bucket create name` | Create storage bucket |
+| `wrangler whoami` | Check if logged in |
 
 ---
 

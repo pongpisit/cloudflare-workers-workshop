@@ -343,4 +343,4 @@ npm run deploy
 
 **Great job!** You've created and deployed your first Cloudflare Worker!
 
-**Next:** [Module 3: Build an AI Chatbot →](./03-ai-chatbot.md)
+**Next:** [Module 3: Image Gallery with R2 →](./03-r2-images.md)
