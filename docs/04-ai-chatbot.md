@@ -1,17 +1,28 @@
-# Module 4: AI Chatbot - Try Different AI Models
+# Module 4: AI Chatbot
 
-In this module, you will build an AI chatbot and experiment with different AI models.
+In this module, you will learn how to use Workers AI to build a chatbot.
 
 **Time needed: 40 minutes**
 
 ---
 
-## What You'll Build
+## What You Will Learn
 
-A chatbot where you can:
-- Chat with AI
+- Enable Workers AI in your project
+- Call AI models from your Worker
+- Build a chat interface
 - Switch between different AI models
-- See how different models respond differently
+- Compare how different models respond
+
+---
+
+## What is Workers AI?
+
+Workers AI lets you run AI models on Cloudflare's servers. You can:
+- Chat with AI (like ChatGPT)
+- Generate text
+- Summarize content
+- And more
 
 ---
 
@@ -28,11 +39,11 @@ npm create cloudflare@latest -- my-ai-chat
 ```
 
 **Answer the questions:**
-- What would you like to start with? → **Hello World example**
-- Which template? → **Hello World Worker**
-- Which language? → **JavaScript**
-- Use git? → **yes**
-- Deploy? → **no**
+- Start with → Hello World example
+- Template → Worker only
+- Language → JavaScript
+- Git → no
+- Deploy → no
 
 **Go into the project:**
 ```powershell
@@ -465,48 +476,51 @@ Find the `model-buttons` section and add more buttons:
 
 ---
 
-## ✅ What You Learned
+## What You Learned
 
-| Skill | ✓ |
-|-------|---|
-| Enable Workers AI | ☐ |
-| Call AI models | ☐ |
-| Build chat interface | ☐ |
-| Switch between models | ☐ |
-| Compare model responses | ☐ |
+| Skill | Done |
+|-------|------|
+| Enable Workers AI | |
+| Call AI models | |
+| Build chat interface | |
+| Switch between models | |
+| Compare model responses | |
 
 ---
 
-## 🎉 Workshop Complete!
+## Key Concepts
 
-**Congratulations!** You've completed the Cloudflare Workers Workshop!
+| Concept | Description |
+|---------|-------------|
+| `env.AI.run(model, options)` | Call an AI model |
+| `messages` | Array of conversation messages |
+| `role: "system"` | Instructions for the AI |
+| `role: "user"` | User's message |
 
-**You built:**
-1. ✅ A Hello World Worker
-2. ✅ An Image Gallery with R2 storage
-3. ✅ An AI Chatbot with multiple models
+---
+
+## Quick Reference
+
+| Command | What It Does |
+|---------|--------------|
+| `npm run dev -- --remote` | Run locally with AI |
+| `npm run deploy` | Deploy to internet |
 
 ---
 
 ## What's Next?
 
-**Ideas to explore:**
+Ideas to explore:
 - Combine the image gallery with the chatbot
 - Try image generation models
 - Add chat history with D1 database
-- Build a custom domain
 
-**Learn more:**
-- [Workers AI Models](https://developers.cloudflare.com/workers-ai/models/)
-- [Workers Documentation](https://developers.cloudflare.com/workers/)
-- [R2 Storage](https://developers.cloudflare.com/r2/)
-
----
+Learn more:
+- Workers AI Models: https://developers.cloudflare.com/workers-ai/models/
+- Workers Documentation: https://developers.cloudflare.com/workers/
 
 ---
 
 ## Next Module
 
-**Want everything in one app?**
-
-**Next:** [Module 5: Complete App - Clone & Deploy →](./05-complete-app.md)
+**Next:** [Module 5: Complete App - Clone and Deploy](./05-complete-app.md)

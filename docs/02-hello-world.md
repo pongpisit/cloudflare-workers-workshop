@@ -269,6 +269,118 @@ Your Worker is now live on the internet!
 
 ---
 
+## Real World Example: Personal Profile Page
+
+Now let's use what you learned to build a real application - a personal profile page like Linktree.
+
+**Replace ALL the code in `src/index.js` with:**
+
+```javascript
+export default {
+  async fetch(request, env, ctx) {
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <title>My Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+    }
+    h1 { color: #333; margin-bottom: 5px; }
+    .title { color: #666; margin-bottom: 15px; }
+    .bio { color: #555; line-height: 1.6; margin-bottom: 25px; font-size: 14px; }
+    .links { display: flex; flex-direction: column; gap: 10px; }
+    .link {
+      display: block;
+      padding: 12px 20px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .link:hover {
+      background: #667eea;
+      color: white;
+    }
+    .footer { margin-top: 25px; color: #999; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="avatar">JD</div>
+    <h1>John Doe</h1>
+    <p class="title">Web Developer</p>
+    <p class="bio">Building things with Cloudflare Workers. Based in Bangkok, Thailand.</p>
+    <div class="links">
+      <a href="https://github.com" class="link">GitHub</a>
+      <a href="https://linkedin.com" class="link">LinkedIn</a>
+      <a href="https://twitter.com" class="link">Twitter</a>
+      <a href="mailto:hello@example.com" class="link">Email Me</a>
+    </div>
+    <p class="footer">Powered by Cloudflare Workers</p>
+  </div>
+</body>
+</html>`;
+
+    return new Response(html, {
+      headers: { "content-type": "text/html" }
+    });
+  },
+};
+```
+
+**Save and test:**
+```powershell
+npm run dev
+```
+
+**Open:** http://localhost:8787
+
+You now have a personal profile page! Customize it by changing:
+- The initials in `.avatar` (JD)
+- The name (John Doe)
+- The title (Web Developer)
+- The bio text
+- The links
+
+**Deploy when ready:**
+```powershell
+npm run deploy
+```
+
+---
+
 ## What You Learned
 
 | Skill | Done |
@@ -279,6 +391,7 @@ Your Worker is now live on the internet!
 | Handle different URL paths | |
 | Return HTML pages | |
 | Deploy to the internet | |
+| Build a real profile page | |
 
 ---
 

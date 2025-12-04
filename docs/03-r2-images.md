@@ -438,6 +438,149 @@ Your image gallery is now live on the internet!
 
 ---
 
+## Real World Example: Photo Sharing App
+
+Now let's enhance the gallery into a photo sharing app with a better UI.
+
+**Replace ALL the code in `src/index.js` with:**
+
+```javascript
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/") return showGallery(env);
+    if (url.pathname === "/upload" && request.method === "POST") {
+      const formData = await request.formData();
+      const file = formData.get("image");
+      if (!file) return new Response("No file", { status: 400 });
+      await env.BUCKET.put(Date.now() + "-" + file.name, file.stream(), {
+        httpMetadata: { contentType: file.type }
+      });
+      return Response.redirect(new URL("/", request.url).toString(), 302);
+    }
+    if (url.pathname.startsWith("/image/")) {
+      const object = await env.BUCKET.get(url.pathname.replace("/image/", ""));
+      if (!object) return new Response("Not found", { status: 404 });
+      return new Response(object.body, {
+        headers: { "content-type": object.httpMetadata?.contentType || "image/jpeg" }
+      });
+    }
+    if (url.pathname.startsWith("/delete/") && request.method === "POST") {
+      await env.BUCKET.delete(url.pathname.replace("/delete/", ""));
+      return Response.redirect(new URL("/", request.url).toString(), 302);
+    }
+    return new Response("Not found", { status: 404 });
+  }
+};
+
+async function showGallery(env) {
+  const list = await env.BUCKET.list();
+  let images = "";
+  
+  if (list.objects.length === 0) {
+    images = '<p class="empty">No photos yet. Upload your first photo!</p>';
+  } else {
+    for (const obj of list.objects.sort((a, b) => new Date(b.uploaded) - new Date(a.uploaded))) {
+      images += `
+        <div class="photo">
+          <img src="/image/${obj.key}" onclick="this.parentElement.classList.toggle('expanded')">
+          <div class="overlay">
+            <form action="/delete/${obj.key}" method="POST">
+              <button type="submit" onclick="return confirm('Delete this photo?')">Delete</button>
+            </form>
+          </div>
+        </div>`;
+    }
+  }
+
+  return new Response(`<!DOCTYPE html>
+<html>
+<head>
+  <title>Photo Sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #111; color: white; min-height: 100vh; }
+    
+    header { background: #000; padding: 15px 20px; border-bottom: 1px solid #333; }
+    .header-content { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    h1 { font-size: 20px; }
+    
+    .upload-btn { background: #0095f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    .upload-btn:hover { background: #1877f2; }
+    
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; }
+    .modal.active { display: flex; }
+    .modal-box { background: #222; padding: 30px; border-radius: 12px; text-align: center; }
+    .modal-box h2 { margin-bottom: 20px; }
+    .modal-box input { margin: 10px 0; }
+    .modal-box button { background: #0095f6; color: white; border: none; padding: 10px 30px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+    .close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 30px; cursor: pointer; }
+    
+    .gallery { max-width: 1000px; margin: 20px auto; padding: 0 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+    @media (max-width: 600px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+    
+    .photo { position: relative; aspect-ratio: 1; overflow: hidden; cursor: pointer; }
+    .photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .photo:hover img { transform: scale(1.05); }
+    .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.2s; }
+    .photo:hover .overlay { opacity: 1; }
+    .overlay button { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+    
+    .photo.expanded { position: fixed; inset: 0; z-index: 50; aspect-ratio: auto; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; }
+    .photo.expanded img { width: auto; height: auto; max-width: 95%; max-height: 95%; object-fit: contain; }
+    .photo.expanded .overlay { display: none; }
+    
+    .empty { grid-column: 1 / -1; text-align: center; padding: 60px; color: #666; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Photo Sharing</h1>
+      <button class="upload-btn" onclick="document.getElementById('modal').classList.add('active')">Upload Photo</button>
+    </div>
+  </header>
+  
+  <div id="modal" class="modal" onclick="if(event.target===this)this.classList.remove('active')">
+    <button class="close" onclick="document.getElementById('modal').classList.remove('active')">&times;</button>
+    <div class="modal-box">
+      <h2>Upload Photo</h2>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required><br>
+        <button type="submit">Upload</button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="gallery">${images}</div>
+</body>
+</html>`, { headers: { "content-type": "text/html" } });
+}
+```
+
+**Save and test:**
+```powershell
+npm run dev
+```
+
+**Open:** http://localhost:8787
+
+This photo sharing app includes:
+- Dark theme UI
+- Click to expand photos full screen
+- Hover to show delete button
+- Modal for uploading
+- Responsive grid layout
+
+**Deploy when ready:**
+```powershell
+npm run deploy
+```
+
+---
+
 ## What You Learned
 
 | Skill | Done |
@@ -449,6 +592,7 @@ Your image gallery is now live on the internet!
 | List files in R2 | |
 | Delete files from R2 | |
 | Build image gallery | |
+| Build photo sharing app | |
 
 ---
 
