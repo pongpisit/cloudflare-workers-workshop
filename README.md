@@ -8,9 +8,9 @@ Build apps with **Cloudflare Workers** and **AI**. Complete in **2 hours**.
 
 | Step | What You Create |
 |------|-----------------|
-| 1 | Simple "Hello World" website |
-| 2 | Image gallery using R2 storage |
-| 3 | AI chatbot - try different AI models! |
+| 1 | **Personal Profile Page** - like Linktree |
+| 2 | **Photo Sharing App** - like mini Instagram |
+| 3 | **AI Chatbot** - try different AI models! |
 
 ---
 
@@ -19,8 +19,8 @@ Build apps with **Cloudflare Workers** and **AI**. Complete in **2 hours**.
 | # | Module | Time | Description |
 |---|--------|------|-------------|
 | 1 | [Setup](./docs/01-prerequisites.md) | 20 min | Install Node.js, Wrangler, VS Code |
-| 2 | [Hello World](./docs/02-hello-world.md) | 20 min | Create your first Worker |
-| 3 | [Image Gallery](./docs/03-r2-images.md) | 30 min | Store images in R2, display in Worker |
+| 2 | [Profile Page](./docs/02-hello-world.md) | 25 min | Build a personal profile page |
+| 3 | [Photo App](./docs/03-r2-images.md) | 30 min | Build a photo sharing app with R2 |
 | 4 | [AI Chatbot](./docs/04-ai-chatbot.md) | 40 min | Build AI chat, try different models |
 | 5 | [Complete App](./docs/05-complete-app.md) | 10 min | Clone & deploy everything! |
 

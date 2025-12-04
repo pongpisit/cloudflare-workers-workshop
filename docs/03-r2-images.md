@@ -1,6 +1,6 @@
-# Module 3: Image Gallery with R2 Storage
+# Module 3: Build a Photo Sharing App
 
-In this module, you will store images in R2 and display them in your Worker.
+In this module, you will build a **photo sharing app** - like a mini Instagram!
 
 **Time needed: 30 minutes**
 
@@ -8,32 +8,53 @@ In this module, you will store images in R2 and display them in your Worker.
 
 ## What You'll Build
 
-A simple image gallery that:
-- Stores images in Cloudflare R2
-- Displays images on a webpage
-- Lets you upload new images
+A photo sharing app where you can:
+- Upload photos
+- View all photos in a beautiful grid
+- Click photos to see them full size
+- Delete photos you don't want
 
 ---
 
-## Step 1: Create a Storage Bucket
+## Step 1: Create a New Project
 
-**Open PowerShell and go to your project:**
-
-```powershell
-cd $HOME\Documents\cloudflare-projects\my-first-worker
-```
-
-**Create an R2 bucket to store images:**
+**Open PowerShell:**
 
 ```powershell
-npx wrangler r2 bucket create my-images
+cd $HOME\Documents\cloudflare-projects
 ```
 
-You should see: `✅ Created bucket 'my-images'`
+```powershell
+npm create cloudflare@latest -- my-photos
+```
+
+**Answer the questions:**
+- Start with → **Hello World example**
+- Template → **Hello World Worker**
+- Language → **JavaScript**
+- Git → **yes**
+- Deploy → **no**
+
+**Go into the project:**
+```powershell
+cd my-photos
+```
 
 ---
 
-## Step 2: Connect R2 to Your Worker
+## Step 2: Create a Storage Bucket
+
+**Run this command to create storage for your photos:**
+
+```powershell
+npx wrangler r2 bucket create my-photos
+```
+
+You should see: `✅ Created bucket 'my-photos'`
+
+---
+
+## Step 3: Connect R2 to Your Worker
 
 **Open VS Code:**
 ```powershell
@@ -44,18 +65,15 @@ code .
 
 ```json
 {
-	"name": "my-first-worker",
-	"main": "src/index.js",
-	"compatibility_date": "2025-12-02",
-	"observability": {
-		"enabled": true
-	},
-	"r2_buckets": [
-		{
-			"bucket_name": "my-images",
-			"binding": "IMAGES"
-		}
-	]
+  "name": "my-photos",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-01",
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "my-photos"
+    }
+  ]
 }
 ```
 
@@ -63,7 +81,7 @@ code .
 
 ---
 
-## Step 3: Create the Image Gallery Code
+## Step 4: Create the Photo Sharing App
 
 **Open `src/index.js` and replace ALL the code with:**
 
@@ -72,175 +90,163 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Home page - show image gallery
-    if (url.pathname === "/") {
-      return showGallery(env);
-    }
-
-    // Upload image
-    if (url.pathname === "/upload" && request.method === "POST") {
-      return uploadImage(request, env);
-    }
-
-    // Serve an image
-    if (url.pathname.startsWith("/image/")) {
-      return serveImage(url.pathname, env);
-    }
+    if (url.pathname === "/") return showGallery(env);
+    if (url.pathname === "/upload" && request.method === "POST") return uploadPhoto(request, env);
+    if (url.pathname.startsWith("/photo/")) return servePhoto(url.pathname, env);
+    if (url.pathname.startsWith("/delete/") && request.method === "POST") return deletePhoto(url.pathname, env, request);
+    if (url.pathname === "/api/photos") return listPhotos(env);
 
     return new Response("Not found", { status: 404 });
   }
 };
 
-// Show the image gallery page
 async function showGallery(env) {
-  // Get list of images from R2
-  const list = await env.IMAGES.list();
+  const list = await env.PHOTOS.list();
   
-  // Create image HTML
-  let imagesHtml = "";
+  let photosHtml = "";
   if (list.objects.length === 0) {
-    imagesHtml = "<p>No images yet. Upload some!</p>";
+    photosHtml = '<p class="empty">No photos yet. Upload your first photo! 📸</p>';
   } else {
-    for (const obj of list.objects) {
-      imagesHtml += `
-        <div class="image-card">
-          <img src="/image/${obj.key}" alt="${obj.key}">
-          <p>${obj.key}</p>
-        </div>
-      `;
+    const sorted = list.objects.sort((a, b) => new Date(b.uploaded) - new Date(a.uploaded));
+    for (const obj of sorted) {
+      const name = obj.key.split('-').slice(1).join('-') || obj.key;
+      photosHtml += `
+        <div class="photo-card">
+          <img src="/photo/${obj.key}" alt="${name}" onclick="openModal('/photo/${obj.key}')">
+          <div class="photo-info">
+            <span>${name}</span>
+            <form action="/delete/${obj.key}" method="POST">
+              <button type="submit" onclick="return confirm('Delete?')">🗑️</button>
+            </form>
+          </div>
+        </div>`;
     }
   }
 
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>My Image Gallery</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-    h1 {
-      color: #333;
-      text-align: center;
-    }
-    .upload-form {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .upload-form input[type="file"] {
-      margin: 10px;
-    }
-    .upload-form button {
-      background: #f38020;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    .upload-form button:hover {
-      background: #e06f10;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    .image-card {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .image-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .image-card p {
-      padding: 10px;
-      margin: 0;
-      font-size: 12px;
-      color: #666;
-      word-break: break-all;
-    }
-  </style>
-</head>
-<body>
-  <h1>My Image Gallery</h1>
-  
-  <div class="upload-form">
-    <h3>Upload a New Image</h3>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-      <input type="file" name="image" accept="image/*" required>
-      <button type="submit">Upload</button>
-    </form>
-  </div>
-
-  <div class="gallery">
-    ${imagesHtml}
-  </div>
-</body>
-</html>
-  `;
-
-  return new Response(html, {
+  return new Response(HTML.replace('{{PHOTOS}}', photosHtml), {
     headers: { "content-type": "text/html" }
   });
 }
 
-// Upload an image to R2
-async function uploadImage(request, env) {
+async function uploadPhoto(request, env) {
   const formData = await request.formData();
-  const file = formData.get("image");
+  const file = formData.get("photo");
+  if (!file) return new Response("No file", { status: 400 });
 
-  if (!file) {
-    return new Response("No file uploaded", { status: 400 });
-  }
-
-  // Create a unique filename
   const filename = Date.now() + "-" + file.name;
-
-  // Save to R2
-  await env.IMAGES.put(filename, file.stream(), {
+  await env.PHOTOS.put(filename, file.stream(), {
     httpMetadata: { contentType: file.type }
   });
 
-  // Redirect back to gallery
   return Response.redirect(new URL("/", request.url).toString(), 302);
 }
 
-// Serve an image from R2
-async function serveImage(pathname, env) {
-  const key = pathname.replace("/image/", "");
-  const object = await env.IMAGES.get(key);
-
-  if (!object) {
-    return new Response("Image not found", { status: 404 });
-  }
+async function servePhoto(pathname, env) {
+  const key = pathname.replace("/photo/", "");
+  const object = await env.PHOTOS.get(key);
+  if (!object) return new Response("Not found", { status: 404 });
 
   return new Response(object.body, {
-    headers: {
-      "content-type": object.httpMetadata?.contentType || "image/jpeg"
-    }
+    headers: { "content-type": object.httpMetadata?.contentType || "image/jpeg" }
   });
 }
+
+async function deletePhoto(pathname, env, request) {
+  await env.PHOTOS.delete(pathname.replace("/delete/", ""));
+  return Response.redirect(new URL("/", request.url).toString(), 302);
+}
+
+async function listPhotos(env) {
+  const list = await env.PHOTOS.list();
+  return Response.json(list.objects.map(obj => ({
+    key: obj.key,
+    url: "/photo/" + obj.key
+  })));
+}
+
+const HTML = `<!DOCTYPE html>
+<html>
+<head>
+  <title>My Photos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #fafafa; min-height: 100vh; }
+    
+    header { background: white; border-bottom: 1px solid #ddd; padding: 15px 20px; position: sticky; top: 0; z-index: 100; }
+    .header-content { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: bold; }
+    
+    .upload-btn { background: #0095f6; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    .upload-btn:hover { background: #1877f2; }
+    
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 200; justify-content: center; align-items: center; }
+    .modal.active { display: flex; }
+    .modal-box { background: white; border-radius: 12px; padding: 30px; width: 90%; max-width: 400px; text-align: center; }
+    .modal-box h2 { margin-bottom: 20px; }
+    .modal-box input { margin: 15px 0; }
+    .modal-box button { background: #0095f6; color: white; border: none; padding: 10px 30px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; }
+    .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 30px; color: white; cursor: pointer; }
+    
+    .gallery { max-width: 900px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 600px) { .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    
+    .photo-card { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; background: #eee; }
+    .photo-card img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.2s; }
+    .photo-card:hover img { transform: scale(1.05); }
+    .photo-info { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 30px 10px 10px; display: flex; justify-content: space-between; align-items: center; opacity: 0; transition: opacity 0.2s; }
+    .photo-card:hover .photo-info { opacity: 1; }
+    .photo-info span { color: white; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%; }
+    .photo-info button { background: none; border: none; cursor: pointer; font-size: 16px; }
+    
+    .empty { grid-column: 1 / -1; text-align: center; padding: 60px; color: #888; }
+    
+    .photo-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 300; justify-content: center; align-items: center; }
+    .photo-modal.active { display: flex; }
+    .photo-modal img { max-width: 95%; max-height: 90vh; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">📸 My Photos</div>
+      <button class="upload-btn" onclick="document.getElementById('uploadModal').classList.add('active')">+ Upload</button>
+    </div>
+  </header>
+
+  <div id="uploadModal" class="modal" onclick="if(event.target===this)this.classList.remove('active')">
+    <button class="close-btn" onclick="document.getElementById('uploadModal').classList.remove('active')">×</button>
+    <div class="modal-box">
+      <h2>Upload Photo</h2>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="photo" accept="image/*" required>
+        <button type="submit">Share Photo</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="photoModal" class="photo-modal" onclick="this.classList.remove('active')">
+    <button class="close-btn" onclick="document.getElementById('photoModal').classList.remove('active')">×</button>
+    <img id="modalImg" src="">
+  </div>
+
+  <div class="gallery">{{PHOTOS}}</div>
+
+  <script>
+    function openModal(src) {
+      document.getElementById('modalImg').src = src;
+      document.getElementById('photoModal').classList.add('active');
+    }
+  </script>
+</body>
+</html>`;
 ```
 
 **Save the file (Ctrl + S)**
 
 ---
 
-## Step 4: Test Your Image Gallery
+## Step 5: Test Your Photo App
 
 **In PowerShell, run:**
 ```powershell
@@ -252,36 +258,35 @@ npm run dev
 http://localhost:8787
 ```
 
-**Try it:**
-1. Click "Choose File" and select an image from your computer
-2. Click "Upload"
-3. See your image appear in the gallery!
-4. Upload more images
+**Try these features:**
+1. Click **"+ Upload"** button
+2. Select a photo from your computer
+3. Click **"Share Photo"**
+4. See your photo in the gallery!
+5. Click a photo to view it full size
+6. Hover and click 🗑️ to delete
 
 ---
 
-## Step 5: Deploy Your Gallery
+## Step 6: Test the API
 
-**Stop the local server** (press Ctrl + C)
+Your app has an API! Try:
+```
+http://localhost:8787/api/photos
+```
 
-**Deploy to the internet:**
+---
+
+## Step 7: Deploy Your Photo App
+
+**Stop the local server** (Ctrl + C)
+
+**Deploy:**
 ```powershell
 npm run deploy
 ```
 
-**Open the URL shown** - your image gallery is now live!
-
----
-
-## Step 6: Upload Images via Command Line (Optional)
-
-You can also upload images using PowerShell:
-
-```powershell
-npx wrangler r2 object put my-images/photo1.jpg --file="C:\Users\YourName\Pictures\photo.jpg" --remote
-```
-
-Then refresh your gallery to see the new image!
+🎉 **Your photo sharing app is live!**
 
 ---
 
@@ -290,10 +295,10 @@ Then refresh your gallery to see the new image!
 | Skill | ✓ |
 |-------|---|
 | Create R2 storage bucket | ☐ |
-| Connect R2 to Worker | ☐ |
-| Upload files to R2 | ☐ |
+| Upload files via web form | ☐ |
 | Display images from R2 | ☐ |
-| Build an image gallery | ☐ |
+| Delete files from R2 | ☐ |
+| Build a REST API | ☐ |
 
 ---
 
@@ -301,15 +306,13 @@ Then refresh your gallery to see the new image!
 
 | Command | What It Does |
 |---------|--------------|
-| `npx wrangler r2 bucket create name` | Create a bucket |
-| `npx wrangler r2 bucket list` | List all buckets |
-| `npx wrangler r2 object put bucket/file --file=path --remote` | Upload file |
-| `npx wrangler r2 object list bucket --remote` | List files in bucket |
+| `npx wrangler r2 bucket create name` | Create bucket |
+| `npx wrangler r2 bucket list` | List buckets |
 
 ---
 
 ## Next Module
 
-**Great!** You've built an image gallery with R2 storage!
+**Amazing!** You've built a real photo sharing app!
 
 **Next:** [Module 4: AI Chatbot →](./04-ai-chatbot.md)

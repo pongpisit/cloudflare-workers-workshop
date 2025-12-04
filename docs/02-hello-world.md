@@ -1,315 +1,207 @@
-# Module 2: Create Your First Worker (Hello World)
+# Module 2: Build Your Personal Profile Page
 
-In this module, you will create your first Cloudflare Worker using the command line.
+In this module, you will build a **personal profile page** - like a mini Linktree!
 
-**Time needed: 30 minutes**
-
----
-
-## What is a Cloudflare Worker?
-
-A Worker is a small program that runs on Cloudflare's servers around the world. When someone visits your Worker's URL, the program runs and sends back a response.
-
-**Think of it like this:** When someone visits `https://my-worker.yourname.workers.dev`, Cloudflare runs your code and shows the result.
+**Time needed: 25 minutes**
 
 ---
 
-## Part A: Create Your First Worker
+## What You'll Build
 
-### Step 1: Open PowerShell
+A personal profile page with:
+- Your name and bio
+- Links to your social media
+- Beautiful design
+- Multiple pages (Home, About)
 
-1. Press **Windows key + R** on your keyboard
+---
+
+## Step 1: Create a New Project
+
+**Open PowerShell:**
+
+1. Press **Windows key + R**
 2. Type `powershell` and press **Enter**
 
-### Step 2: Go to Your Projects Folder
+**Run these commands:**
 
-**Copy and paste this command, then press Enter:**
 ```powershell
 cd $HOME\Documents\cloudflare-projects
 ```
 
-> **Note:** If you see an error, create the folder first by running:
-> ```powershell
-> mkdir $HOME\Documents\cloudflare-projects
-> cd $HOME\Documents\cloudflare-projects
-> ```
-
-### Step 3: Create a New Worker Project
-
-**Copy and paste this command, then press Enter:**
 ```powershell
-npm create cloudflare@latest -- my-first-worker
+npm create cloudflare@latest -- my-profile
 ```
 
-### Step 4: Answer the Questions
+**Answer the questions:**
+- Start with → **Hello World example**
+- Template → **Hello World Worker**
+- Language → **JavaScript**
+- Git → **yes**
+- Deploy → **no**
 
-The tool will ask you some questions. **Type your answers exactly as shown:**
-
-**Question 1:** `What would you like to start with?`
-- Use arrow keys to select **"Hello World" Starter**
-- Press **Enter**
-
-**Question 2:** `Which template would you like to use?`
-- Select **"Worker Only"**
-- Press **Enter**
-
-**Question 3:** `Which language do you want to use?`
-- Select **JavaScript**
-- Press **Enter**
-
-**Question 4:** `Do you want to use git for version control?`
-- Type `no` and press **Enter**
-
-**Question 5:** `Do you want to deploy your application?`
-- Type `no` and press **Enter** (we'll deploy later)
-
-**Wait for it to finish.** You'll see "SUCCESS" when it's done.
-
-### Step 5: Go Into Your Project Folder
-
-**Copy and paste this command, then press Enter:**
+**Go into the project:**
 ```powershell
-cd my-first-worker
+cd my-profile
 ```
 
-### Step 6: Open the Project in VS Code
-
-**Copy and paste this command, then press Enter:**
+**Open in VS Code:**
 ```powershell
 code .
 ```
 
-VS Code will open with your project.
+---
 
-### Step 7: Look at Your Worker Code
+## Step 2: Create Your Profile Page
 
-In VS Code:
-1. Look at the left side panel
-2. Click on the **"src"** folder to expand it
-3. Click on **"index.js"**
-
-You'll see this code:
+**Open `src/index.js` and replace ALL the code with:**
 
 ```javascript
 export default {
-  async fetch(request, env, ctx) {
-    return new Response('Hello World!');
-  },
+  async fetch(request) {
+    return new Response(HTML, {
+      headers: { "content-type": "text/html" }
+    });
+  }
 };
+
+const HTML = `<!DOCTYPE html>
+<html>
+<head>
+  <title>My Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+    }
+    h1 { color: #333; margin-bottom: 10px; }
+    .title { color: #666; margin-bottom: 20px; }
+    .bio { color: #555; line-height: 1.6; margin-bottom: 30px; }
+    .links { display: flex; flex-direction: column; gap: 10px; }
+    .link {
+      display: block;
+      padding: 12px 20px;
+      background: #f5f5f5;
+      border-radius: 10px;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .link:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-2px);
+    }
+    .footer { margin-top: 30px; color: #999; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="avatar">👤</div>
+    <h1>Your Name</h1>
+    <p class="title">Web Developer | Designer</p>
+    <p class="bio">
+      Hello! I'm learning to build apps with Cloudflare Workers. 
+      This is my personal profile page running on the edge!
+    </p>
+    <div class="links">
+      <a href="https://github.com" class="link">🐙 GitHub</a>
+      <a href="https://linkedin.com" class="link">💼 LinkedIn</a>
+      <a href="https://twitter.com" class="link">🐦 Twitter</a>
+      <a href="mailto:hello@example.com" class="link">📧 Email Me</a>
+    </div>
+    <p class="footer">Powered by Cloudflare Workers ⚡</p>
+  </div>
+</body>
+</html>`;
 ```
 
-**This is your Worker code!** Let's understand it:
-
-- `export default { ... }` - This creates your Worker
-- `async fetch(request, env, ctx)` - This runs when someone visits your Worker
-- `return new Response('Hello World!')` - This sends "Hello World!" back to the visitor
-
-### Step 8: Test Your Worker Locally
-
-**Go back to PowerShell.** (If you closed it, open it again and run `cd $HOME\Documents\cloudflare-projects\my-first-worker`)
-
-**Copy and paste this command, then press Enter:**
-```powershell
-npm run dev
-```
-
-**You'll see something like:**
-```
-Ready on http://localhost:8787
-```
-
-### Step 9: View Your Worker in Browser
-
-**Copy this link and paste it in your browser:**
-```
-http://localhost:8787
-```
-
-You should see: **"Hello World!"**
-
-> ✅ Your Worker is running on your computer!
-
-### Step 10: Change Your Worker Code
-
-**In VS Code**, change the code in `src/index.js` to:
-
-```javascript
-export default {
-  async fetch(request, env, ctx) {
-    return new Response('Hello! I made this Worker myself!');
-  },
-};
-```
-
-**Save the file** (press Ctrl + S)
-
-**Go back to your browser** and refresh the page (press F5)
-
-You should see your new message!
-
-### Step 11: Stop the Local Server
-
-**Go back to PowerShell** and press **Ctrl + C** to stop the server.
-
-### Step 12: Deploy Your Worker to the Internet
-
-Now let's put your Worker on the internet so anyone can see it.
-
-**Copy and paste this command, then press Enter:**
-```powershell
-npm run deploy
-```
-**Choose your lab account (if any)**
-**You'll see something like:**
-```
-Published my-first-worker (1.23 sec)
-  https://my-first-worker.yourname.workers.dev
-```
-
-### Step 13: Visit Your Live Worker
-
-**Copy the URL** from the output (it looks like `https://my-first-worker.yourname.workers.dev`)
-
-**Paste it in your browser.**
-
-🎉 **Your Worker is now live on the internet!** Anyone with this URL can see it.
+**Save the file (Ctrl + S)**
 
 ---
 
-## Part B: Make Your Worker More Interesting
-
-Let's make your Worker return JSON data (like a real API).
-
-### Step 1: Update Your Code
-
-**In VS Code**, replace ALL the code in `src/index.js` with this:
-
-```javascript
-export default {
-  async fetch(request, env, ctx) {
-    // Create some data
-    const data = {
-      message: "Hello from my Cloudflare Worker!",
-      time: new Date().toISOString(),
-      author: "Your Name Here"
-    };
-
-    // Send the data as JSON
-    return new Response(JSON.stringify(data, null, 2), {
-      headers: {
-        "content-type": "application/json"
-      }
-    });
-  },
-};
-```
-
-### Step 2: Test Locally
+## Step 3: Test Your Profile Page
 
 **In PowerShell, run:**
 ```powershell
 npm run dev
 ```
 
-**Open in browser:**
+**Open your browser:**
 ```
 http://localhost:8787
 ```
 
-You should see JSON data like:
-```json
-{
-  "message": "Hello from my Cloudflare Worker!",
-  "time": "2024-12-04T10:30:00.000Z",
-  "author": "Your Name Here"
-}
-```
-
-### Step 3: Deploy the Update
-
-**Stop the local server** (press Ctrl + C in PowerShell)
-
-**Deploy your changes:**
-```powershell
-npm run deploy
-```
-
-Visit your Worker URL to see the JSON response live!
+You should see your beautiful profile page!
 
 ---
 
-## Part C: Add Multiple Pages to Your Worker
+## Step 4: Customize Your Profile
 
-Let's make your Worker respond differently based on the URL.
+**Edit the HTML in `src/index.js` to personalize:**
 
-### Step 1: Update Your Code
-
-**In VS Code**, replace ALL the code in `src/index.js` with this:
-
-```javascript
-export default {
-  async fetch(request, env, ctx) {
-    // Get the URL path
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    // Home page
-    if (path === "/" || path === "") {
-      return new Response("Welcome to my Worker! Try visiting /hello or /time");
-    }
-
-    // Hello page
-    if (path === "/hello") {
-      return new Response("Hello, World! 👋");
-    }
-
-    // Time page
-    if (path === "/time") {
-      const now = new Date().toLocaleString();
-      return new Response("Current time: " + now);
-    }
-
-    // API page (returns JSON)
-    if (path === "/api") {
-      const data = {
-        status: "ok",
-        message: "This is my API",
-        timestamp: new Date().toISOString()
-      };
-      return new Response(JSON.stringify(data, null, 2), {
-        headers: { "content-type": "application/json" }
-      });
-    }
-
-    // Page not found
-    return new Response("Page not found", { status: 404 });
-  },
-};
+### Change Your Name
+```html
+<h1>Your Name</h1>
 ```
 
-### Step 2: Test All Pages
-
-**Run the local server:**
-```powershell
-npm run dev
+### Change Your Title
+```html
+<p class="title">Web Developer | Designer</p>
 ```
 
-**Try these URLs in your browser:**
+### Change Your Links
+```html
+<a href="https://github.com/YOUR-USERNAME" class="link">🐙 GitHub</a>
+```
 
-| URL | What You'll See |
-|-----|-----------------|
-| `http://localhost:8787/` | Welcome message |
-| `http://localhost:8787/hello` | Hello, World! 👋 |
-| `http://localhost:8787/time` | Current time |
-| `http://localhost:8787/api` | JSON data |
-| `http://localhost:8787/anything` | Page not found |
+### Change Your Avatar Emoji
+Find `<div class="avatar">👤</div>` and change to:
+- 👨‍💻 (developer)
+- 👩‍💼 (professional)
+- 🧑‍🎨 (designer)
 
-### Step 3: Deploy
+**Save and refresh your browser!**
 
-**Stop the server** (Ctrl + C) and **deploy:**
+---
+
+## Step 5: Deploy Your Profile
+
+**Stop the local server** (Ctrl + C)
+
+**Deploy to the internet:**
 ```powershell
 npm run deploy
 ```
+
+🎉 **Your profile page is now live!** Share the URL with friends!
 
 ---
 
@@ -318,29 +210,25 @@ npm run deploy
 | Skill | ✓ |
 |-------|---|
 | Create a Worker project | ☐ |
-| Run a Worker locally | ☐ |
-| Deploy a Worker to the internet | ☐ |
-| Return plain text | ☐ |
-| Return JSON | ☐ |
-| Handle different URL paths | ☐ |
+| Build HTML pages | ☐ |
+| Style with CSS | ☐ |
+| Deploy to the internet | ☐ |
 
 ---
 
 ## Quick Reference
 
-| What You Want to Do | Command |
-|---------------------|---------|
-| Create a new project | `npm create cloudflare@latest -- project-name` |
-| Go into project folder | `cd project-name` |
-| Run locally | `npm run dev` |
-| Stop local server | Press `Ctrl + C` |
-| Deploy to internet | `npm run deploy` |
-| Open project in VS Code | `code .` |
+| Command | What It Does |
+|---------|--------------|
+| `npm create cloudflare@latest -- name` | Create project |
+| `npm run dev` | Run locally |
+| `npm run deploy` | Deploy to internet |
+| `Ctrl + C` | Stop server |
 
 ---
 
 ## Next Module
 
-**Great job!** You've created and deployed your first Cloudflare Worker!
+**Awesome!** You've built a real profile page!
 
-**Next:** [Module 3: Image Gallery with R2 →](./03-r2-images.md)
+**Next:** [Module 3: Photo Sharing App →](./03-r2-images.md)
