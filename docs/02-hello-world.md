@@ -50,7 +50,7 @@ The tool will ask you some questions. **Type your answers exactly as shown:**
 - Press **Enter**
 
 **Question 2:** `Which template would you like to use?`
-- Select **"Hello World" Worker**
+- Select **"Worker Only"**
 - Press **Enter**
 
 **Question 3:** `Which language do you want to use?`
