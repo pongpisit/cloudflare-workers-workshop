@@ -343,4 +343,4 @@ npm run deploy
 
 **Great job!** You've created and deployed your first Cloudflare Worker!
 
-**Next:** [Module 3: Connect to Database (D1) →](./03-d1-database.md)
+**Next:** [Module 3: Build an AI Chatbot →](./03-ai-chatbot.md)
