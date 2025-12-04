@@ -1,363 +1,281 @@
 # Module 1: Prerequisites & Setup for Windows
 
-This module guides you through setting up your Windows development environment for Cloudflare Workers development.
+This module will help you set up everything you need on your Windows computer. Follow each step exactly as shown.
 
-## 📋 Table of Contents
-
-1. [System Requirements](#system-requirements)
-2. [Create a Cloudflare Account](#1-create-a-cloudflare-account)
-3. [Install Node.js](#2-install-nodejs)
-4. [Install Wrangler CLI](#3-install-wrangler-cli)
-5. [Authenticate Wrangler](#4-authenticate-wrangler)
-6. [Install a Code Editor](#5-install-a-code-editor)
-7. [Verify Installation](#6-verify-installation)
-8. [Troubleshooting](#troubleshooting)
+**Time needed: 30 minutes**
 
 ---
 
-## System Requirements
+## What You Will Do
 
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| OS | Windows 10 | Windows 11 |
-| RAM | 4 GB | 8 GB+ |
-| Disk Space | 2 GB free | 5 GB+ free |
-| Node.js | 18.0.0 | 20.x LTS |
-| Internet | Required | Required |
+1. Create a free Cloudflare account
+2. Install Node.js (required software)
+3. Install Wrangler (Cloudflare's tool)
+4. Connect Wrangler to your Cloudflare account
+5. Install VS Code (code editor)
 
 ---
 
-## 1. Create a Cloudflare Account
+## Step 1: Create a Cloudflare Account
 
-### Step 1.1: Sign Up
+### 1.1 Open the Sign-Up Page
 
-1. Open your web browser and navigate to: **https://dash.cloudflare.com/sign-up/workers-and-pages**
-
-2. Enter your email address and create a password
-
-3. Click **Create Account**
-
-4. Check your email and verify your account by clicking the verification link
-
-### Step 1.2: Access the Dashboard
-
-1. Log in to the Cloudflare Dashboard: **https://dash.cloudflare.com/**
-
-2. You should see the main dashboard with **Workers & Pages** in the left sidebar
-
-![Cloudflare Dashboard](https://developers.cloudflare.com/assets/images/workers-and-pages-dashboard.png)
-
-> **💡 Tip**: The free tier includes 100,000 requests per day, which is more than enough for learning and development.
-
----
-
-## 2. Install Node.js
-
-Wrangler requires Node.js version **18.0.0 or later**. We recommend using the LTS (Long Term Support) version.
-
-### Option A: Direct Download (Recommended for Beginners)
-
-1. Visit the Node.js website: **https://nodejs.org/**
-
-2. Download the **LTS** version (e.g., 20.x.x LTS)
-
-3. Run the installer:
-   - Accept the license agreement
-   - Use the default installation path: `C:\Program Files\nodejs\`
-   - **Important**: Check the box for "Automatically install the necessary tools"
-   - Click **Install**
-
-4. Restart your computer after installation
-
-### Option B: Using Winget (Windows Package Manager)
-
-Open **PowerShell as Administrator** and run:
-
-```powershell
-winget install OpenJS.NodeJS.LTS
+**Copy this link and paste it in your browser:**
+```
+https://dash.cloudflare.com/sign-up/workers-and-pages
 ```
 
-### Option C: Using Node Version Manager (nvm-windows)
+### 1.2 Fill in Your Details
 
-For managing multiple Node.js versions:
+1. Enter your **email address**
+2. Create a **password**
+3. Click the **Create Account** button
 
-1. Download nvm-windows from: **https://github.com/coreybutler/nvm-windows/releases**
+### 1.3 Verify Your Email
 
-2. Download and run `nvm-setup.exe`
+1. Open your email inbox
+2. Find the email from Cloudflare
+3. Click the **verification link** in the email
 
-3. After installation, open a new PowerShell window and run:
+### 1.4 Log In to Dashboard
 
-```powershell
-# Install the latest LTS version
-nvm install lts
-
-# Use the installed version
-nvm use lts
+**Copy this link and paste it in your browser:**
+```
+https://dash.cloudflare.com/
 ```
 
-### Verify Node.js Installation
+You should see the Cloudflare Dashboard. Look for **"Workers & Pages"** in the left menu.
 
-Open **PowerShell** or **Command Prompt** and run:
+> **Done!** You now have a Cloudflare account.
 
+---
+
+## Step 2: Install Node.js
+
+Node.js is required software that Wrangler needs to work.
+
+### 2.1 Download Node.js
+
+**Copy this link and paste it in your browser:**
+```
+https://nodejs.org/
+```
+
+### 2.2 Click the Download Button
+
+1. Click the green **"LTS"** button (this downloads the recommended version)
+2. Wait for the download to complete
+
+### 2.3 Install Node.js
+
+1. **Double-click** the downloaded file (it looks like `node-v20.x.x-x64.msi`)
+2. Click **Next** on the welcome screen
+3. **Check the box** to accept the license agreement, then click **Next**
+4. Keep the default installation location, click **Next**
+5. Keep the default features, click **Next**
+6. **Important:** Check the box that says **"Automatically install the necessary tools"**
+7. Click **Next**, then click **Install**
+8. Wait for installation to complete
+9. Click **Finish**
+
+### 2.4 Restart Your Computer
+
+**Important:** Restart your computer now to complete the installation.
+
+### 2.5 Verify Node.js is Installed
+
+After restarting:
+
+1. Press **Windows key + R** on your keyboard
+2. Type `powershell` and press **Enter**
+3. A blue window will open (this is PowerShell)
+
+**Copy and paste this command, then press Enter:**
 ```powershell
 node --version
 ```
 
-Expected output (version may vary):
+**You should see something like:**
 ```
 v20.10.0
 ```
 
-Also verify npm (Node Package Manager):
-
-```powershell
-npm --version
-```
-
-Expected output:
-```
-10.2.3
-```
+> **Done!** Node.js is installed. The number might be different, that's OK.
 
 ---
 
-## 3. Install Wrangler CLI
+## Step 3: Install Wrangler
 
-Wrangler is Cloudflare's command-line tool for managing Workers projects.
+Wrangler is Cloudflare's tool for creating and managing Workers.
 
-### Install Wrangler Globally
+### 3.1 Open PowerShell
 
-Open **PowerShell** or **Command Prompt** and run:
+1. Press **Windows key + R** on your keyboard
+2. Type `powershell` and press **Enter**
 
+### 3.2 Install Wrangler
+
+**Copy and paste this command, then press Enter:**
 ```powershell
 npm install -g wrangler@latest
 ```
 
-> **📝 Note**: The `-g` flag installs Wrangler globally, making it available from any directory.
+**Wait for it to finish.** You'll see some text scrolling. When it's done, you'll see a new line starting with `PS`.
 
-### Verify Wrangler Installation
+### 3.3 Verify Wrangler is Installed
 
+**Copy and paste this command, then press Enter:**
 ```powershell
-npx wrangler --version
+wrangler --version
 ```
 
-Expected output (version may vary):
+**You should see something like:**
 ```
-⛅️ wrangler 3.99.0
-```
-
-### Alternative: Use npx (No Global Install)
-
-You can also use Wrangler without installing it globally by using `npx`:
-
-```powershell
-npx wrangler@latest --version
+ wrangler 3.99.0
 ```
 
-This downloads and runs the latest version of Wrangler each time.
+> **Done!** Wrangler is installed.
 
 ---
 
-## 4. Authenticate Wrangler
+## Step 4: Connect Wrangler to Cloudflare
 
-You need to authenticate Wrangler with your Cloudflare account.
+Now we need to connect Wrangler to your Cloudflare account.
 
-### Step 4.1: Run the Login Command
+### 4.1 Run the Login Command
 
+**In PowerShell, copy and paste this command, then press Enter:**
 ```powershell
-npx wrangler login
+wrangler login
 ```
 
-### Step 4.2: Authorize in Browser
+### 4.2 Authorize in Your Browser
 
-1. A browser window will automatically open
+1. A browser window will **automatically open**
+2. If asked, **log in** to your Cloudflare account
+3. Click the **"Allow"** button to authorize Wrangler
+4. You should see a message: **"Successfully logged in"**
 
-2. Log in to your Cloudflare account if prompted
+### 4.3 Verify the Connection
 
-3. Click **Allow** to authorize Wrangler
-
-4. You should see a success message: "Successfully logged in"
-
-### Step 4.3: Verify Authentication
-
+**Go back to PowerShell. Copy and paste this command, then press Enter:**
 ```powershell
-npx wrangler whoami
+wrangler whoami
 ```
 
-Expected output:
+**You should see your email address and account name:**
 ```
-⛅️ wrangler 3.99.0
--------------------
-Getting User settings...
-👋 You are logged in with an OAuth Token, associated with the email your-email@example.com!
-┌─────────────────────────────────────┬──────────────────────────────────┐
-│ Account Name                        │ Account ID                       │
-├─────────────────────────────────────┼──────────────────────────────────┤
-│ Your Account Name                   │ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx │
-└─────────────────────────────────────┴──────────────────────────────────┘
+ You are logged in with an OAuth Token, associated with the email your-email@example.com!
 ```
 
-> **🔐 Security Note**: Your authentication token is stored locally. Never share your API tokens or commit them to version control.
+> **Done!** Wrangler is connected to your Cloudflare account.
 
 ---
 
-## 5. Install a Code Editor
+## Step 5: Install VS Code (Code Editor)
 
-We recommend **Visual Studio Code** for Cloudflare Workers development.
+VS Code is a free code editor that makes writing code easier.
 
-### Install VS Code
+### 5.1 Download VS Code
 
-1. Download VS Code from: **https://code.visualstudio.com/**
+**Copy this link and paste it in your browser:**
+```
+https://code.visualstudio.com/
+```
 
-2. Run the installer and follow the prompts
+### 5.2 Install VS Code
 
-3. **Recommended**: Check these options during installation:
+1. Click the **"Download for Windows"** button
+2. **Double-click** the downloaded file
+3. Accept the license agreement
+4. **Important:** Check these boxes:
    - Add "Open with Code" action to Windows Explorer file context menu
    - Add "Open with Code" action to Windows Explorer directory context menu
    - Add to PATH
+5. Click **Next**, then **Install**
+6. Click **Finish**
 
-### Recommended VS Code Extensions
-
-After installing VS Code, install these extensions:
-
-1. **Open VS Code**
-
-2. Press `Ctrl+Shift+X` to open Extensions
-
-3. Search and install:
-
-| Extension | Purpose |
-|-----------|---------|
-| **ESLint** | JavaScript/TypeScript linting |
-| **Prettier** | Code formatting |
-| **JavaScript and TypeScript Nightly** | Enhanced JS/TS support |
-| **Cloudflare Workers** | Cloudflare-specific features |
-
-### Configure VS Code for Workers
-
-Create a workspace settings file for better TypeScript support:
-
-1. Create a new folder for your projects: `C:\Users\YourName\cloudflare-projects`
-
-2. Open this folder in VS Code
-
-3. Create `.vscode/settings.json`:
-
-```json
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "typescript.preferences.importModuleSpecifier": "relative",
-  "files.eol": "\n"
-}
-```
+> **Done!** VS Code is installed.
 
 ---
 
-## 6. Verify Installation
+## Step 6: Create Your Project Folder
 
-Let's verify everything is set up correctly.
+### 6.1 Create a Folder
 
-### Run the Verification Script
+1. Open **File Explorer** (press Windows key + E)
+2. Go to your **Documents** folder
+3. **Right-click** in an empty area
+4. Select **New** → **Folder**
+5. Name the folder: `cloudflare-projects`
 
-Open PowerShell and run each command:
+### 6.2 Remember This Location
 
-```powershell
-# Check Node.js
-Write-Host "Node.js version:" -ForegroundColor Cyan
-node --version
-
-# Check npm
-Write-Host "`nnpm version:" -ForegroundColor Cyan
-npm --version
-
-# Check Wrangler
-Write-Host "`nWrangler version:" -ForegroundColor Cyan
-npx wrangler --version
-
-# Check Wrangler authentication
-Write-Host "`nWrangler authentication:" -ForegroundColor Cyan
-npx wrangler whoami
+Your project folder is now at:
+```
+C:\Users\YourName\Documents\cloudflare-projects
 ```
 
-### Expected Results
+(Replace "YourName" with your Windows username)
 
-✅ Node.js version: v18.0.0 or higher  
-✅ npm version: 8.0.0 or higher  
-✅ Wrangler version: 3.0.0 or higher  
-✅ Wrangler authenticated with your Cloudflare account
+> **Done!** You have a folder for your projects.
 
 ---
 
-## Troubleshooting
+## Final Checklist
 
-### Issue: "node" is not recognized
+Before moving to the next module, make sure you have completed:
 
-**Cause**: Node.js is not in your system PATH.
+| Step | Status |
+|------|--------|
+| Created Cloudflare account | |
+| Installed Node.js | |
+| Installed Wrangler | |
+| Connected Wrangler to Cloudflare | |
+| Installed VS Code | |
+| Created project folder | |
 
-**Solution**:
-1. Restart your computer
-2. If still not working, manually add Node.js to PATH:
-   - Press `Win + X` → System → Advanced system settings
-   - Click "Environment Variables"
-   - Under "System variables", find "Path" and click "Edit"
-   - Add: `C:\Program Files\nodejs\`
-   - Click OK and restart PowerShell
+---
 
-### Issue: npm install fails with permission errors
+## Having Problems?
 
-**Cause**: Windows security restrictions.
+### Problem: "node is not recognized"
 
-**Solution**: Run PowerShell as Administrator:
-1. Right-click on PowerShell
-2. Select "Run as administrator"
-3. Run the npm install command again
+**Solution:** Restart your computer and try again.
 
-### Issue: Wrangler login doesn't open browser
+### Problem: "npm install" shows errors
 
-**Cause**: Default browser not set or firewall blocking.
+**Solution:** 
+1. Close PowerShell
+2. Right-click on PowerShell
+3. Select **"Run as administrator"**
+4. Try the command again
 
-**Solution**: Use manual authentication:
+### Problem: Wrangler login doesn't open browser
+
+**Solution:** Copy and paste this command instead:
 ```powershell
-npx wrangler login --browser=false
+wrangler login --browser=false
 ```
-This will provide a URL to copy and paste into your browser manually.
+Then copy the URL it shows and paste it in your browser manually.
 
-### Issue: SSL/Certificate errors
+### Problem: "Execution policy" error
 
-**Cause**: Corporate proxy or firewall.
-
-**Solution**: Configure npm to use your proxy:
-```powershell
-npm config set proxy http://your-proxy:port
-npm config set https-proxy http://your-proxy:port
-```
-
-### Issue: Execution policy prevents running scripts
-
-**Cause**: Windows PowerShell execution policy.
-
-**Solution**: Run PowerShell as Administrator and execute:
+**Solution:** 
+1. Close PowerShell
+2. Right-click on PowerShell
+3. Select **"Run as administrator"**
+4. Copy and paste this command:
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
+5. Type `Y` and press Enter
+6. Try again
 
 ---
 
-## 📝 Checkpoint
+## Next Module
 
-Before proceeding to the next module, ensure you have:
+**Congratulations!** Your computer is ready for Cloudflare Workers development.
 
-- [ ] Created a Cloudflare account
-- [ ] Installed Node.js (v18+)
-- [ ] Installed Wrangler CLI
-- [ ] Authenticated Wrangler with your Cloudflare account
-- [ ] Installed VS Code with recommended extensions
-
----
-
-## Next Steps
-
-Congratulations! Your development environment is ready. 
-
-**Continue to** → [Module 2: Your First Worker - Hello World](./02-hello-world.md)
+**Next:** [Module 2: Create Your First Worker →](./02-hello-world.md)
