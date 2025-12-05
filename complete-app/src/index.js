@@ -109,16 +109,16 @@ export default {
 // ===== SHARED STYLES =====
 const NAV_STYLE = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
-  nav { background: #1e293b; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-  .logo { font-size: 20px; font-weight: bold; color: #f97316; text-decoration: none; }
+  body { font-family: system-ui, sans-serif; background: #000000; color: #FFFFFF; min-height: 100vh; }
+  nav { background: #1a1a1a; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #F6821F; }
+  .logo { font-size: 20px; font-weight: bold; color: #F6821F; text-decoration: none; }
   .nav-links { display: flex; gap: 5px; flex-wrap: wrap; }
-  .nav-links a { color: #94a3b8; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-size: 14px; }
-  .nav-links a:hover { background: #334155; color: white; }
-  .nav-links a.active { background: #f97316; color: white; }
+  .nav-links a { color: #999999; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-size: 14px; }
+  .nav-links a:hover { background: #333333; color: #FFFFFF; }
+  .nav-links a.active { background: #F6821F; color: #FFFFFF; }
   .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-  h1 { margin-bottom: 10px; }
-  .subtitle { color: #64748b; margin-bottom: 30px; }
+  h1 { margin-bottom: 10px; color: #FFFFFF; }
+  .subtitle { color: #999999; margin-bottom: 30px; }
 `;
 
 function getNavHtml(active) {
@@ -142,15 +142,15 @@ function getHomePage() {
 <style>
   ${NAV_STYLE}
   .hero { text-align: center; padding: 60px 20px; }
-  .hero h1 { font-size: 48px; margin-bottom: 20px; }
-  .hero p { font-size: 20px; color: #64748b; margin-bottom: 40px; }
+  .hero h1 { font-size: 48px; margin-bottom: 20px; color: #FFFFFF; }
+  .hero p { font-size: 20px; color: #999999; margin-bottom: 40px; }
   .apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto; padding: 0 20px; }
-  .app-card { background: #1e293b; border-radius: 12px; padding: 25px; text-align: center; text-decoration: none; color: white; transition: transform 0.2s, box-shadow 0.2s; }
-  .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-  .app-card .icon { font-size: 40px; margin-bottom: 15px; font-weight: bold; color: #f97316; }
-  .app-card h3 { margin-bottom: 10px; }
-  .app-card p { color: #64748b; font-size: 14px; }
-  .module-tag { background: #334155; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #94a3b8; margin-top: 10px; display: inline-block; }
+  .app-card { background: #1a1a1a; border-radius: 12px; padding: 25px; text-align: center; text-decoration: none; color: #FFFFFF; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #333333; }
+  .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(246,130,31,0.2); border-color: #F6821F; }
+  .app-card .icon { font-size: 40px; margin-bottom: 15px; font-weight: bold; color: #F6821F; }
+  .app-card h3 { margin-bottom: 10px; color: #FFFFFF; }
+  .app-card p { color: #999999; font-size: 14px; }
+  .module-tag { background: #333333; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #FBAD41; margin-top: 10px; display: inline-block; }
 </style></head>
 <body>
   ${getNavHtml('home')}
@@ -194,13 +194,13 @@ function getProfilePage() {
 <style>
   ${NAV_STYLE}
   .profile { max-width: 400px; margin: 40px auto; text-align: center; padding: 0 20px; }
-  .avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #ec4899); margin: 0 auto 20px; }
-  .name { font-size: 28px; margin-bottom: 5px; }
-  .bio { color: #64748b; margin-bottom: 30px; }
+  .avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #FF6633, #F6821F, #FBAD41); margin: 0 auto 20px; }
+  .name { font-size: 28px; margin-bottom: 5px; color: #FFFFFF; }
+  .bio { color: #999999; margin-bottom: 30px; }
   .links { display: flex; flex-direction: column; gap: 12px; }
-  .link { background: #1e293b; padding: 15px 20px; border-radius: 10px; color: white; text-decoration: none; display: flex; align-items: center; gap: 12px; transition: background 0.2s; }
-  .link:hover { background: #334155; }
-  .link-icon { font-size: 14px; background: #334155; padding: 5px 8px; border-radius: 4px; }
+  .link { background: #1a1a1a; padding: 15px 20px; border-radius: 10px; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; gap: 12px; transition: all 0.2s; border: 1px solid #333333; }
+  .link:hover { background: #333333; border-color: #F6821F; }
+  .link-icon { font-size: 14px; background: #F6821F; color: #FFFFFF; padding: 5px 8px; border-radius: 4px; }
 </style></head>
 <body>
   ${getNavHtml('profile')}
@@ -232,22 +232,23 @@ function getGalleryPage() {
 <html><head><title>Photo Gallery</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
-  .upload-box { background: #1e293b; border-radius: 12px; padding: 25px; margin-bottom: 30px; }
-  .upload-box h3 { margin-bottom: 15px; }
+  .upload-box { background: #1a1a1a; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid #333333; }
+  .upload-box h3 { margin-bottom: 15px; color: #FFFFFF; }
   .upload-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .upload-form input[type="file"] { flex: 1; min-width: 200px; }
-  .upload-form input[type="text"] { flex: 2; min-width: 200px; padding: 10px; border: none; border-radius: 8px; background: #334155; color: white; }
-  .upload-btn { padding: 10px 25px; background: #f97316; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-  .upload-btn:hover { background: #ea580c; }
-  .upload-btn:disabled { background: #4b5563; }
+  .upload-form input[type="file"] { flex: 1; min-width: 200px; color: #FFFFFF; }
+  .upload-form input[type="text"] { flex: 2; min-width: 200px; padding: 10px; border: 1px solid #333333; border-radius: 8px; background: #000000; color: #FFFFFF; }
+  .upload-form input[type="text"]:focus { border-color: #F6821F; outline: none; }
+  .upload-btn { padding: 10px 25px; background: #F6821F; color: #FFFFFF; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+  .upload-btn:hover { background: #FF6633; }
+  .upload-btn:disabled { background: #333333; color: #666666; }
   .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-  .photo-card { background: #1e293b; border-radius: 12px; overflow: hidden; }
+  .photo-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333333; }
   .photo-card img { width: 100%; height: 200px; object-fit: cover; }
   .photo-info { padding: 15px; }
-  .photo-caption { margin-bottom: 10px; }
-  .delete-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 12px; }
+  .photo-caption { margin-bottom: 10px; color: #FFFFFF; }
+  .delete-btn { background: none; border: none; color: #FF6633; cursor: pointer; font-size: 12px; }
   .delete-btn:hover { text-decoration: underline; }
-  .empty { text-align: center; padding: 60px; color: #64748b; }
+  .empty { text-align: center; padding: 60px; color: #999999; }
 </style></head>
 <body>
   ${getNavHtml('gallery')}
@@ -332,19 +333,21 @@ function getChatPage() {
 <html><head><title>AI Chat</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
-  .chat-container { background: #1e293b; border-radius: 12px; overflow: hidden; }
-  .models { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px; background: #0f172a; }
-  .model-btn { padding: 8px 15px; background: #334155; border: 2px solid transparent; color: #94a3b8; border-radius: 8px; cursor: pointer; font-size: 13px; }
-  .model-btn:hover { border-color: #f97316; color: #f97316; }
-  .model-btn.active { background: #f97316; color: white; border-color: #f97316; }
-  .messages { height: 400px; overflow-y: auto; padding: 20px; }
+  .chat-container { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333333; }
+  .models { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px; background: #000000; border-bottom: 1px solid #333333; }
+  .model-btn { padding: 8px 15px; background: #333333; border: 2px solid transparent; color: #999999; border-radius: 8px; cursor: pointer; font-size: 13px; }
+  .model-btn:hover { border-color: #F6821F; color: #F6821F; }
+  .model-btn.active { background: #F6821F; color: #FFFFFF; border-color: #F6821F; }
+  .messages { height: 400px; overflow-y: auto; padding: 20px; background: #1a1a1a; }
   .msg { margin-bottom: 15px; padding: 12px 16px; border-radius: 12px; max-width: 80%; }
-  .user { background: #f97316; margin-left: auto; }
-  .bot { background: #334155; }
-  .model-tag { font-size: 10px; color: #64748b; margin-top: 5px; }
-  .input-area { display: flex; gap: 10px; padding: 15px; background: #0f172a; }
-  .input-area input { flex: 1; padding: 12px; border: none; border-radius: 8px; background: #334155; color: white; font-size: 16px; }
-  .input-area button { padding: 12px 25px; background: #f97316; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+  .user { background: #F6821F; color: #FFFFFF; margin-left: auto; }
+  .bot { background: #333333; color: #FFFFFF; }
+  .model-tag { font-size: 10px; color: #FBAD41; margin-top: 5px; }
+  .input-area { display: flex; gap: 10px; padding: 15px; background: #000000; border-top: 1px solid #333333; }
+  .input-area input { flex: 1; padding: 12px; border: 1px solid #333333; border-radius: 8px; background: #1a1a1a; color: #FFFFFF; font-size: 16px; }
+  .input-area input:focus { border-color: #F6821F; outline: none; }
+  .input-area button { padding: 12px 25px; background: #F6821F; color: #FFFFFF; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+  .input-area button:hover { background: #FF6633; }
 </style></head>
 <body>
   ${getNavHtml('chat')}
@@ -419,19 +422,20 @@ function getImageGenPage() {
 <html><head><title>Image Generator</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
-  .gen-box { background: #1e293b; border-radius: 12px; padding: 25px; }
-  .gen-box h3 { margin-bottom: 15px; }
-  .gen-box textarea { width: 100%; height: 100px; padding: 15px; border: none; border-radius: 8px; background: #334155; color: white; font-size: 14px; resize: none; margin-bottom: 15px; }
+  .gen-box { background: #1a1a1a; border-radius: 12px; padding: 25px; border: 1px solid #333333; }
+  .gen-box h3 { margin-bottom: 15px; color: #FFFFFF; }
+  .gen-box textarea { width: 100%; height: 100px; padding: 15px; border: 1px solid #333333; border-radius: 8px; background: #000000; color: #FFFFFF; font-size: 14px; resize: none; margin-bottom: 15px; }
+  .gen-box textarea:focus { border-color: #F6821F; outline: none; }
   .examples { margin-bottom: 15px; }
-  .examples p { color: #64748b; font-size: 12px; margin-bottom: 8px; }
-  .example-btn { background: #334155; border: none; color: #94a3b8; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin: 4px; font-size: 12px; }
-  .example-btn:hover { background: #475569; color: white; }
-  .gen-btn { width: 100%; padding: 15px; background: #8b5cf6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
-  .gen-btn:hover { background: #7c3aed; }
-  .gen-btn:disabled { background: #4b5563; }
+  .examples p { color: #999999; font-size: 12px; margin-bottom: 8px; }
+  .example-btn { background: #333333; border: none; color: #999999; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin: 4px; font-size: 12px; }
+  .example-btn:hover { background: #F6821F; color: #FFFFFF; }
+  .gen-btn { width: 100%; padding: 15px; background: #FF6633; color: #FFFFFF; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+  .gen-btn:hover { background: #F6821F; }
+  .gen-btn:disabled { background: #333333; color: #666666; }
   .result { margin-top: 25px; text-align: center; }
-  .result img { max-width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-  .result p { color: #64748b; margin-top: 10px; font-size: 12px; }
+  .result img { max-width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(246,130,31,0.3); }
+  .result p { color: #999999; margin-top: 10px; font-size: 12px; }
 </style></head>
 <body>
   ${getNavHtml('image-gen')}
