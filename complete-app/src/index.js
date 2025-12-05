@@ -2,6 +2,20 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // Auto-initialize database table
+    try {
+      await env.DB.prepare(`
+        CREATE TABLE IF NOT EXISTS photos (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          filename TEXT NOT NULL,
+          caption TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `).run();
+    } catch (e) {
+      // Table already exists, ignore
+    }
+
     // ===== PAGE ROUTES =====
     if (url.pathname === "/" || url.pathname === "") {
       return new Response(getHomePage(), { headers: { "content-type": "text/html" } });
@@ -59,22 +73,28 @@ export default {
       
       const filename = Date.now() + "-" + file.name;
       await env.MEDIA.put(filename, file.stream(), {
-        httpMetadata: { contentType: file.type },
-        customMetadata: { caption: caption }
+        httpMetadata: { contentType: file.type }
       });
+      
+      // Store caption in D1
+      await env.DB.prepare("INSERT INTO photos (filename, caption) VALUES (?, ?)")
+        .bind(filename, caption)
+        .run();
+      
       return Response.json({ success: true, filename });
     }
 
     // List media
     if (url.pathname === "/api/media" && request.method === "GET") {
-      const list = await env.MEDIA.list();
-      const files = await Promise.all(list.objects.map(async (o) => {
-        const obj = await env.MEDIA.head(o.key);
-        return { 
-          name: o.key, 
-          url: "/media/" + o.key,
-          caption: obj?.customMetadata?.caption || ""
-        };
+      const { results } = await env.DB.prepare(
+        "SELECT * FROM photos ORDER BY created_at DESC"
+      ).all();
+      
+      const files = results.map(photo => ({
+        id: photo.id,
+        name: photo.filename,
+        url: "/media/" + photo.filename,
+        caption: photo.caption || ""
       }));
       return Response.json(files);
     }
@@ -83,6 +103,7 @@ export default {
     if (url.pathname.startsWith("/api/delete/") && request.method === "POST") {
       const filename = url.pathname.replace("/api/delete/", "");
       await env.MEDIA.delete(filename);
+      await env.DB.prepare("DELETE FROM photos WHERE filename = ?").bind(filename).run();
       return Response.json({ success: true });
     }
 
@@ -269,7 +290,7 @@ function getGalleryPage() {
           gallery.innerHTML = '<div class="empty">No photos yet. Upload your first photo!</div>';
           return;
         }
-        gallery.innerHTML = photos.reverse().map(p => 
+        gallery.innerHTML = photos.map(p => 
           '<div class="photo-card">' +
             '<img src="' + p.url + '" alt="">' +
             '<div class="photo-info">' +

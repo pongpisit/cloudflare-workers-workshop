@@ -10,5 +10,11 @@
       "binding": "MEDIA",
       "bucket_name": "my-app-media"
     }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-app-db"
+    }
   ]
 }
