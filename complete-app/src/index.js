@@ -151,25 +151,25 @@ const HOME_PAGE = `<!DOCTYPE html>
   </div>
   <div class="apps">
     <a href="/profile" class="app-card">
-      <div class="icon">👤</div>
+      <div class="icon">01</div>
       <h3>Profile</h3>
       <p>Personal Linktree-style page</p>
       <span class="module-tag">Module 02</span>
     </a>
     <a href="/gallery" class="app-card">
-      <div class="icon">🖼️</div>
+      <div class="icon">02</div>
       <h3>Gallery</h3>
       <p>Photo gallery with R2 storage</p>
       <span class="module-tag">Module 03</span>
     </a>
     <a href="/chat" class="app-card">
-      <div class="icon">💬</div>
+      <div class="icon">03</div>
       <h3>AI Chat</h3>
       <p>Chat with multiple AI models</p>
       <span class="module-tag">Module 04</span>
     </a>
     <a href="/image-gen" class="app-card">
-      <div class="icon">🎨</div>
+      <div class="icon">04</div>
       <h3>Image Gen</h3>
       <p>Generate images from text</p>
       <span class="module-tag">Module 04</span>
@@ -194,21 +194,21 @@ const PROFILE_PAGE = `<!DOCTYPE html>
 <body>
   ${NAV_HTML('profile')}
   <div class="profile">
-    <div class="avatar">👤</div>
+    <div class="avatar"></div>
     <h1 class="name">Your Name</h1>
     <p class="bio">Developer | Creator | Learner</p>
     <div class="links">
       <a href="https://github.com" class="link" target="_blank">
-        <span class="link-icon">💻</span> GitHub
+        <span class="link-icon">[GH]</span> GitHub
       </a>
       <a href="https://twitter.com" class="link" target="_blank">
-        <span class="link-icon">🐦</span> Twitter
+        <span class="link-icon">[TW]</span> Twitter
       </a>
       <a href="https://linkedin.com" class="link" target="_blank">
-        <span class="link-icon">💼</span> LinkedIn
+        <span class="link-icon">[LI]</span> LinkedIn
       </a>
       <a href="mailto:you@example.com" class="link">
-        <span class="link-icon">📧</span> Email Me
+        <span class="link-icon">[EM]</span> Email Me
       </a>
     </div>
   </div>
