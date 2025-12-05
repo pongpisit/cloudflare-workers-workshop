@@ -730,12 +730,33 @@ http://localhost:8787
 
 **Stop the server (Ctrl + C)**
 
-**Deploy to the internet:**
+**Step 6a: Create the database table on remote**
+
+First, create a file called `schema.sql` in your project folder with this content:
+
+```sql
+CREATE TABLE IF NOT EXISTS photos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  filename TEXT NOT NULL,
+  caption TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Run this command to create the table on the remote database:**
+```powershell
+npx wrangler d1 execute my-photos-db --remote --file=schema.sql
+```
+
+You should see: `Executed 1 command`
+
+**Step 6b: Deploy the Worker**
+
 ```powershell
 npm run deploy
 ```
 
-The database table will be created automatically on first visit.
+Your app is now live on the internet!
 
 ---
 
