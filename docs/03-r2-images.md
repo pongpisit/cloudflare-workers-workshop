@@ -541,12 +541,18 @@ export default {
     const url = new URL(request.url);
 
     // Auto-initialize database table on every request
-    await env.MY_PHOTOS_DB.exec(`CREATE TABLE IF NOT EXISTS photos (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      filename TEXT NOT NULL,
-      caption TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`);
+    try {
+      await env.MY_PHOTOS_DB.prepare(`
+        CREATE TABLE IF NOT EXISTS photos (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          filename TEXT NOT NULL,
+          caption TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `).run();
+    } catch (e) {
+      // Table already exists, ignore error
+    }
 
     if (url.pathname === "/") return showFeed(env);
     
