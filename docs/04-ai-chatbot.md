@@ -336,12 +336,7 @@ const HTML_PAGE = `
         <button class="model-btn" data-model="@cf/mistral/mistral-7b-instruct-v0.1">
           Mistral 7B
         </button>
-        <button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">
-          Gemma 7B
-        </button>
-        <button class="model-btn" data-model="@cf/qwen/qwen1.5-7b-chat-awq">
-          Qwen 1.5 7B
-        </button>
+        <!-- Bonus: Add more model buttons here! -->
       </div>
       <p class="model-info">
         💡 Different models have different strengths. Try asking the same question to different models!
@@ -504,17 +499,22 @@ Here are some models you can try:
 
 ## Bonus: Add More Models
 
-Want to add more models?
+The code includes 4 models. Try adding 2 more yourself!
 
 **File to edit: `src/index.js`**
 
-Find the `model-buttons` section (around line 2XX) and add more buttons:
+Find the `model-buttons` section (around line 294) and add these buttons after the existing ones:
 
 ```html
 <button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">
-  Google Gemma
+  Gemma 7B
+</button>
+<button class="model-btn" data-model="@cf/qwen/qwen1.5-7b-chat-awq">
+  Qwen 1.5 7B
 </button>
 ```
+
+**Save the file and refresh your browser to see the new models!**
 
 ---
 
