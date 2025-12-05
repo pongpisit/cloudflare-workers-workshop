@@ -2,20 +2,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Auto-initialize database table
-    try {
-      await env.DB.prepare(`
-        CREATE TABLE IF NOT EXISTS photos (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          filename TEXT NOT NULL,
-          caption TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-      `).run();
-    } catch (e) {
-      // Table already exists, ignore
-    }
-
     // ===== PAGE ROUTES =====
     if (url.pathname === "/" || url.pathname === "") {
       return new Response(getHomePage(), { headers: { "content-type": "text/html" } });

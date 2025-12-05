@@ -98,7 +98,26 @@ npx wrangler d1 create my-app-db
 
 > **Note:** Copy the `database_id` from the output - you'll need it for the configuration file.
 
-### Step 4: Update Configuration
+### Step 4: Create Database Schema
+
+**Create a new file: `schema.sql`** in the root of your project:
+
+```sql
+CREATE TABLE IF NOT EXISTS photos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  filename TEXT NOT NULL,
+  caption TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Run the schema:**
+
+```powershell
+npx wrangler d1 execute my-app-db --remote --file=schema.sql
+```
+
+### Step 5: Update Configuration
 
 **Open VS Code:**
 ```powershell
@@ -137,7 +156,7 @@ This file is in the root of your project folder.
 
 **Save (Ctrl + S)**
 
-### Step 5: Add the Complete Code
+### Step 6: Add the Complete Code
 
 **File to edit: `src/index.js`**
 
@@ -151,20 +170,6 @@ This file is inside the `src` folder.
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-
-    // Auto-initialize database table
-    try {
-      await env.DB.prepare(`
-        CREATE TABLE IF NOT EXISTS photos (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          filename TEXT NOT NULL,
-          caption TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-      `).run();
-    } catch (e) {
-      // Table already exists, ignore
-    }
 
     // ===== PAGE ROUTES =====
     if (url.pathname === "/" || url.pathname === "") {
@@ -664,7 +669,7 @@ function getImageGenPage() {
 
 **Save (Ctrl + S)**
 
-### Step 6: Test Locally
+### Step 7: Test Locally
 
 ```powershell
 npm run dev -- --remote
@@ -672,7 +677,7 @@ npm run dev -- --remote
 
 **Open:** http://localhost:8787
 
-### Step 7: Deploy
+### Step 8: Deploy
 
 **Stop server (Ctrl + C), then:**
 
