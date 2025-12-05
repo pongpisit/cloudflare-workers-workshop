@@ -1,6 +1,6 @@
 # Complete App - Ready to Deploy
 
-This is a complete Cloudflare Workers app with AI Chat and Image Gallery.
+This is a complete Cloudflare Workers app with AI Chat and Image/Video Gallery.
 
 ## Quick Deploy
 
@@ -19,14 +19,14 @@ npx wrangler r2 bucket create my-app-media
 npm run deploy
 ```
 
-Done! Open the URL shown.
+Done! Open the URL shown in the terminal.
 
 ## Features
 
-- 🤖 AI Chat with 5 models to choose from
-- 🖼️ Image & Video Gallery with R2 storage
-- 🎨 Beautiful dark theme UI
-- ⚡ Runs globally on Cloudflare
+- AI Chat with multiple models to choose from
+- Image and Video Gallery with R2 storage
+- Dark theme UI
+- Runs globally on Cloudflare edge network
 
 ## Local Development
 
@@ -35,3 +35,12 @@ npm run dev -- --remote
 ```
 
 Open: http://localhost:8787
+
+## Wrangler Answers
+
+When creating a new project with `npm create cloudflare@latest`:
+- Start with: Hello World example
+- Template: Worker only
+- Language: JavaScript
+- Git: no
+- Deploy: no
