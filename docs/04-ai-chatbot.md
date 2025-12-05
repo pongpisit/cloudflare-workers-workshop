@@ -2,7 +2,7 @@
 
 In this module, you will learn how to use Workers AI to build a chatbot.
 
-**Time needed: 40 minutes**
+**Time needed: 45 minutes** (+ 20 minutes for Bonus Challenge)
 
 ---
 
@@ -16,13 +16,45 @@ In this module, you will learn how to use Workers AI to build a chatbot.
 
 ---
 
+## Why Workers AI is Amazing
+
+Building AI apps used to be hard. You needed:
+- Expensive GPU servers
+- Complex setup and configuration
+- API keys from multiple providers
+- Worry about scaling and costs
+
+**With Cloudflare Workers AI, it's incredibly simple:**
+
+| Traditional AI | Workers AI |
+|----------------|------------|
+| Rent GPU servers ($100+/month) | Free tier included |
+| Install ML frameworks | Just add `"ai": { "binding": "AI" }` |
+| Manage API keys | Already authenticated |
+| Complex deployment | One command: `npm run deploy` |
+| Worry about scaling | Auto-scales globally |
+
+**The magic line of code:**
+```javascript
+const response = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+  messages: [{ role: "user", content: "Hello!" }]
+});
+```
+
+That's it! One line to call a powerful AI model. No API keys, no setup, no servers.
+
+---
+
 ## What is Workers AI?
 
 Workers AI lets you run AI models on Cloudflare's servers. You can:
 - Chat with AI (like ChatGPT)
 - Generate text
 - Summarize content
-- And more
+- Describe images (vision models)
+- Generate images
+- Translate languages
+- And much more!
 
 ---
 
@@ -486,6 +518,290 @@ Find the `model-buttons` section (around line 286) and add more buttons:
 
 ---
 
+## Bonus Challenge: Image-to-Text App
+
+Want to try something more advanced? Build an app that describes images using AI!
+
+**This challenge shows how easy it is to use vision models with Workers AI.**
+
+### Challenge: Create a New Project
+
+```powershell
+cd $HOME\Documents\cloudflare-projects
+npm create cloudflare@latest -- my-image-describer
+```
+
+**Answer the questions:**
+- Start with → Hello World example
+- Template → Worker only
+- Language → JavaScript
+- Git → no
+- Deploy → no
+
+```powershell
+cd my-image-describer
+code .
+```
+
+### Challenge Step 1: Update wrangler.jsonc
+
+**File to edit: `wrangler.jsonc`**
+
+```json
+{
+  "name": "my-image-describer",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-01",
+  "ai": {
+    "binding": "AI"
+  }
+}
+```
+
+### Challenge Step 2: Create the Image Describer
+
+**File to edit: `src/index.js`**
+
+**Delete everything and paste this code:**
+
+```javascript
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    // Home page
+    if (url.pathname === "/" && request.method === "GET") {
+      return new Response(HTML, { headers: { "content-type": "text/html" } });
+    }
+
+    // Describe image from URL
+    if (url.pathname === "/describe" && request.method === "POST") {
+      const { imageUrl } = await request.json();
+      
+      try {
+        // Fetch the image
+        const imageResponse = await fetch(imageUrl);
+        const imageBuffer = await imageResponse.arrayBuffer();
+        const imageArray = [...new Uint8Array(imageBuffer)];
+
+        // Use LLaVA model to describe the image
+        const response = await env.AI.run("@cf/llava-hf/llava-1.5-7b-hf", {
+          image: imageArray,
+          prompt: "Describe this image in detail. What do you see?",
+          max_tokens: 512
+        });
+
+        return Response.json({ 
+          description: response.description,
+          success: true 
+        });
+      } catch (error) {
+        return Response.json({ 
+          error: "Failed to describe image: " + error.message,
+          success: false 
+        }, { status: 500 });
+      }
+    }
+
+    return new Response("Not found", { status: 404 });
+  }
+};
+
+const HTML = `<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Describer - AI Vision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #1e3a5f 0%, #0d1b2a 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: white;
+    }
+    .container { max-width: 600px; margin: 0 auto; }
+    h1 { text-align: center; margin-bottom: 10px; }
+    .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
+    
+    .card {
+      background: #1f2937;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+    
+    label { display: block; margin-bottom: 8px; font-weight: 500; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #374151;
+      color: white;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    input::placeholder { color: #9ca3af; }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover { background: #2563eb; }
+    button:disabled { background: #4b5563; cursor: not-allowed; }
+    
+    .preview { margin-top: 20px; text-align: center; }
+    .preview img { max-width: 100%; max-height: 300px; border-radius: 8px; }
+    
+    .result {
+      background: #374151;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    .result h3 { margin-bottom: 10px; color: #3b82f6; }
+    
+    .loading { text-align: center; color: #9ca3af; }
+    .error { color: #ef4444; }
+    
+    .examples { margin-top: 15px; }
+    .examples p { font-size: 12px; color: #9ca3af; margin-bottom: 8px; }
+    .example-btn {
+      background: #374151;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+    .example-btn:hover { background: #4b5563; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Image Describer</h1>
+    <p class="subtitle">AI-powered image description using Workers AI</p>
+    
+    <div class="card">
+      <label>Enter an image URL:</label>
+      <input type="text" id="imageUrl" placeholder="https://example.com/image.jpg">
+      <button onclick="describeImage()" id="btn">Describe Image</button>
+      
+      <div class="examples">
+        <p>Try these examples:</p>
+        <button class="example-btn" onclick="setExample('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg')">Cat</button>
+        <button class="example-btn" onclick="setExample('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/YellowLabradorLooking_new.jpg/1200px-YellowLabradorLooking_new.jpg')">Dog</button>
+        <button class="example-btn" onclick="setExample('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png')">Landscape</button>
+      </div>
+      
+      <div class="preview" id="preview"></div>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    function setExample(url) {
+      document.getElementById('imageUrl').value = url;
+      document.getElementById('preview').innerHTML = '<img src="' + url + '" alt="Preview">';
+    }
+
+    async function describeImage() {
+      const imageUrl = document.getElementById('imageUrl').value.trim();
+      const btn = document.getElementById('btn');
+      const result = document.getElementById('result');
+      const preview = document.getElementById('preview');
+      
+      if (!imageUrl) {
+        alert('Please enter an image URL');
+        return;
+      }
+      
+      // Show preview
+      preview.innerHTML = '<img src="' + imageUrl + '" alt="Preview">';
+      
+      // Show loading
+      result.innerHTML = '<div class="loading">Analyzing image with AI...</div>';
+      btn.disabled = true;
+      
+      try {
+        const response = await fetch('/describe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageUrl })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          result.innerHTML = '<div class="result"><h3>AI Description:</h3>' + data.description + '</div>';
+        } else {
+          result.innerHTML = '<div class="result error">Error: ' + data.error + '</div>';
+        }
+      } catch (error) {
+        result.innerHTML = '<div class="result error">Error: ' + error.message + '</div>';
+      }
+      
+      btn.disabled = false;
+    }
+    
+    // Preview image when URL changes
+    document.getElementById('imageUrl').addEventListener('change', function() {
+      const url = this.value.trim();
+      if (url) {
+        document.getElementById('preview').innerHTML = '<img src="' + url + '" alt="Preview">';
+      }
+    });
+  </script>
+</body>
+</html>`;
+```
+
+### Challenge Step 3: Test It
+
+```powershell
+npm run dev -- --remote
+```
+
+Open http://localhost:8787 and try:
+1. Click one of the example buttons (Cat, Dog, Landscape)
+2. Click "Describe Image"
+3. Wait for the AI to analyze and describe the image
+
+### Challenge Step 4: Deploy
+
+```powershell
+npm run deploy
+```
+
+### What You Built
+
+You just created an AI-powered image description app with:
+- Vision AI model (LLaVA)
+- Image URL input
+- Real-time image preview
+- AI-generated descriptions
+
+**All in about 150 lines of code!**
+
+### Other Vision Models to Try
+
+| Model | Description |
+|-------|-------------|
+| `@cf/llava-hf/llava-1.5-7b-hf` | General image description |
+| `@cf/unum/uform-gen2-qwen-500m` | Fast image captioning |
+
+---
+
 ## What You Learned
 
 | Skill | Done |
@@ -495,6 +811,7 @@ Find the `model-buttons` section (around line 286) and add more buttons:
 | Build chat interface | |
 | Switch between models | |
 | Compare model responses | |
+| Use vision models (Bonus) | |
 
 ---
 
