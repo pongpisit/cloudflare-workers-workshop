@@ -202,12 +202,12 @@ export default {
 
 **Save and test these URLs:**
 
-| URL | Result |
-|-----|--------|
-| http://localhost:8787/ | Welcome to my Worker! |
-| http://localhost:8787/about | This is the about page. |
-| http://localhost:8787/api | JSON data |
-| http://localhost:8787/xyz | Page not found |
+| Local URL | Workers URL | Result |
+|-----------|---------------|--------|
+| http://localhost:8787/ | `https://<worker-name>.<subdomain>.workers.dev/` | Welcome to my Worker! |
+| http://localhost:8787/about | `https://<worker-name>.<subdomain>.workers.dev/about` | This is the about page. |
+| http://localhost:8787/api | `https://<worker-name>.<subdomain>.workers.dev/api` | JSON data |
+| http://localhost:8787/xyz | `https://<worker-name>.<subdomain>.workers.dev/xyz` | Page not found |
 
 ---
 

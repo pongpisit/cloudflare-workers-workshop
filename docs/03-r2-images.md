@@ -30,6 +30,9 @@ R2 is Cloudflare's object storage service. You can store files like:
 
 ## Step 1: Create a New Project
 
+> [!NOTE]  
+> For those following alone via Clouddflare dashboard, you may create a new application.
+
 **Open PowerShell:**
 
 ```powershell
@@ -64,9 +67,15 @@ npx wrangler r2 bucket create my-photos
 
 You should see: `Created bucket 'my-photos'`
 
+> [!NOTE]  
+> Alternatively, you can create a bucket via Cloudflare dashboard. 
+> From the sidebar, go to: *Storage & databases* > *R2 object storage* > *Overview**Create bucket*.
+
 ---
 
 ## Step 3: Connect R2 to Your Worker
+
+### 3.1 Steps for via VS Code
 
 **Open VS Code:**
 ```powershell
@@ -100,7 +109,18 @@ This file is in the root of your project folder (not inside src/).
 | `binding` | The name you use in your code to access R2 |
 | `bucket_name` | The actual bucket name you created |
 
+
 **Save the file (Ctrl + S)**
+
+### 3.2 Steps for via Cloudflare dashboard
+
+**Go to: Workers & Pages > my-gallery > Bindings > Add binding > R2 bucket > Add Binding**
+
+**Fill in the form:**
+- Variable name: `BUCKET`
+- Bucket name: `my-gallery`
+
+**Deploy :rocket:**
 
 ---
 
@@ -464,6 +484,8 @@ If your server is running, press **Ctrl + C** to stop it.
 
 ### Step 2: Create a D1 Database
 
+#### 2.1 Steps for via VS Code
+
 **Run this command in PowerShell:**
 ```powershell
 npx wrangler d1 create my-photos-db
@@ -474,7 +496,7 @@ npx wrangler d1 create my-photos-db
 Successfully created DB 'my-photos-db'
 
 [[d1_databases]]
-binding = "DB"
+binding = "MY_PHOTOS_DB"
 database_name = "my-photos-db"
 database_id = "abc12345-1234-5678-abcd-1234567890ab"
 ```
@@ -482,6 +504,14 @@ database_id = "abc12345-1234-5678-abcd-1234567890ab"
 **IMPORTANT: Copy your `database_id` value. You will need it in the next step.**
 
 Your database_id will be different from the example above.
+
+#### 2.2 Steps for via Cloudflare dashboard
+
+**Create D1 database. Go to: Storage & databases* >D1 SQL database > Create Databse >**
+
+**Add binding to your worker. Go to Workers & Pages > my-gallery > Bindings > Add binding > D1 database > Add Binding**
+- Variable name: `DB`
+- Database name: `my-photos-db`
 
 ---
 

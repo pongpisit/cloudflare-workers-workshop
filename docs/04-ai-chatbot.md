@@ -90,9 +90,14 @@ cd my-ai-chat
 code .
 ```
 
+> [!NOTE]  
+> For those following alone via Clouddflare dashboard, you may create a new application.
+
 ---
 
 ## Step 2: Enable Workers AI
+
+### 2.1 Steps for via VS Code
 
 **File to edit: `wrangler.jsonc`**
 
@@ -112,6 +117,11 @@ This file is in the root of your project folder (not inside src/).
 ```
 
 **Save the file (Ctrl + S)**
+
+### 2.2 Steps for via Cloudflare dashboard
+
+**Add binding to your worker. Go to Workers & Pages > my-ai-chat > Bindings > Add binding > Workers AI > Add Binding**
+- Variable name: `AI`
 
 ---
 
