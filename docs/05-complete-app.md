@@ -90,7 +90,15 @@ cd my-complete-app
 npx wrangler r2 bucket create my-app-media
 ```
 
-### Step 3: Update Configuration
+### Step 3: Create D1 Database
+
+```powershell
+npx wrangler d1 create my-app-db
+```
+
+> **Note:** Copy the `database_id` from the output - you'll need it for the configuration file.
+
+### Step 4: Update Configuration
 
 **Open VS Code:**
 ```powershell
@@ -120,7 +128,8 @@ This file is in the root of your project folder.
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "my-app-db"
+      "database_name": "my-app-db",
+      "database_id": "<paste-your-database-id-here>"
     }
   ]
 }
@@ -128,7 +137,7 @@ This file is in the root of your project folder.
 
 **Save (Ctrl + S)**
 
-### Step 4: Add the Complete Code
+### Step 5: Add the Complete Code
 
 **File to edit: `src/index.js`**
 
@@ -655,7 +664,7 @@ function getImageGenPage() {
 
 **Save (Ctrl + S)**
 
-### Step 5: Test Locally
+### Step 6: Test Locally
 
 ```powershell
 npm run dev -- --remote
@@ -663,7 +672,7 @@ npm run dev -- --remote
 
 **Open:** http://localhost:8787
 
-### Step 6: Deploy
+### Step 7: Deploy
 
 **Stop server (Ctrl + C), then:**
 
