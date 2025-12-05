@@ -511,16 +511,13 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Initialize database table
-    if (url.pathname === "/init") {
-      await env.DB.exec(`CREATE TABLE IF NOT EXISTS photos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        filename TEXT NOT NULL,
-        caption TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )`);
-      return new Response("Database initialized");
-    }
+    // Auto-initialize database table on every request
+    await env.DB.exec(`CREATE TABLE IF NOT EXISTS photos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      filename TEXT NOT NULL,
+      caption TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
 
     if (url.pathname === "/") return showFeed(env);
     
@@ -666,12 +663,7 @@ async function showFeed(env) {
 npm run dev
 ```
 
-**First, initialize the database by visiting:**
-```
-http://localhost:8787/init
-```
-
-**Then go to the main page:**
+**Open your browser:**
 ```
 http://localhost:8787
 ```
@@ -685,18 +677,12 @@ http://localhost:8787
 
 ### Step 6: Deploy
 
-**Create the production database table:**
-```powershell
-npx wrangler d1 execute my-photos-db --remote --file=schema.sql
-```
-
 **Deploy:**
 ```powershell
 npm run deploy
 ```
 
-**Initialize the remote database:**
-Visit `https://your-worker.workers.dev/init`
+The database table will be created automatically on first visit.
 
 ---
 
