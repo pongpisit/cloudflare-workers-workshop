@@ -59,7 +59,11 @@ code .
 
 ## Step 2: Enable Workers AI
 
-**Open `wrangler.jsonc` and replace ALL content with:**
+**File to edit: `wrangler.jsonc`**
+
+This file is in the root of your project folder (not inside src/).
+
+**Delete everything in the file and paste this code:**
 
 ```json
 {
@@ -78,7 +82,11 @@ code .
 
 ## Step 3: Create the AI Chatbot Code
 
-**Open `src/index.js` and replace ALL the code with:**
+**File to edit: `src/index.js`**
+
+This file is inside the `src` folder.
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
@@ -464,9 +472,11 @@ Here are some models you can try:
 
 ## Bonus: Add More Models
 
-Want to add more models? Edit the HTML in `src/index.js`:
+Want to add more models?
 
-Find the `model-buttons` section and add more buttons:
+**File to edit: `src/index.js`**
+
+Find the `model-buttons` section (around line 286) and add more buttons:
 
 ```html
 <button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">

@@ -9,10 +9,10 @@ Want everything in one app? Just clone this code and deploy!
 ## What You Get
 
 A complete app with:
-- 🖼️ Image Gallery (R2 storage)
-- 🤖 AI Chatbot (multiple models)
-- 🎨 Beautiful UI
-- ⚡ Ready to deploy
+- Image Gallery (R2 storage)
+- AI Chatbot (multiple models)
+- Beautiful UI
+- Ready to deploy
 
 ---
 
@@ -68,12 +68,12 @@ cd $HOME\Documents\cloudflare-projects
 npm create cloudflare@latest -- my-complete-app
 ```
 
-**Answer:**
-- Start with → **Hello World example**
-- Template → **Hello World Worker**
-- Language → **JavaScript**
-- Git → **yes**
-- Deploy → **no**
+**Answer the questions:**
+- Start with → Hello World example
+- Template → Worker only
+- Language → JavaScript
+- Git → no
+- Deploy → no
 
 ```powershell
 cd my-complete-app
@@ -92,7 +92,11 @@ npx wrangler r2 bucket create my-app-media
 code .
 ```
 
-**Open `wrangler.jsonc` and replace ALL with:**
+**File to edit: `wrangler.jsonc`**
+
+This file is in the root of your project folder.
+
+**Delete everything in the file and paste this code:**
 
 ```json
 {
@@ -115,7 +119,11 @@ code .
 
 ### Step 4: Add the Complete Code
 
-**Open `src/index.js` and replace ALL with:**
+**File to edit: `src/index.js`**
+
+This file is inside the `src` folder.
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
@@ -382,7 +390,7 @@ npm run dev -- --remote
 npm run deploy
 ```
 
-**Done!** 🎉
+**Done!**
 
 ---
 
@@ -448,26 +456,26 @@ wrangler login
 
 ---
 
-## ✅ Checklist
+## Checklist
 
 | Step | Done |
 |------|------|
-| Clone or create project | ☐ |
-| Create R2 bucket | ☐ |
-| Update wrangler.jsonc | ☐ |
-| Add the code | ☐ |
-| Test locally | ☐ |
-| Deploy | ☐ |
+| Clone or create project | |
+| Create R2 bucket | |
+| Update wrangler.jsonc | |
+| Add the code to src/index.js | |
+| Test locally | |
+| Deploy | |
 
 ---
 
-## 🎉 Congratulations!
+## Congratulations!
 
 You now have a complete Cloudflare app with:
-- ✅ AI Chatbot with multiple models
-- ✅ Image & Video Gallery
-- ✅ Beautiful responsive UI
-- ✅ Deployed globally on Cloudflare
+- AI Chatbot with multiple models
+- Image and Video Gallery
+- Beautiful responsive UI
+- Deployed globally on Cloudflare
 
 **Share your app URL with everyone!**
 

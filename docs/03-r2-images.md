@@ -73,7 +73,11 @@ You should see: `Created bucket 'my-photos'`
 code .
 ```
 
-**Open `wrangler.jsonc` and replace ALL content with:**
+**File to edit: `wrangler.jsonc`**
+
+This file is in the root of your project folder (not inside src/).
+
+**Delete everything in the file and paste this code:**
 
 ```json
 {
@@ -102,7 +106,11 @@ code .
 
 ## Step 4: Learn Basic R2 Operations
 
-**Open `src/index.js` and replace ALL the code with:**
+**File to edit: `src/index.js`**
+
+This file is inside the `src` folder.
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
@@ -214,7 +222,9 @@ Invoke-RestMethod -Uri "http://localhost:8787/files/hello.txt" -Method DELETE
 
 Now let's build a web page to upload and view images.
 
-**Replace ALL the code in `src/index.js` with:**
+**File to edit: `src/index.js`**
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
@@ -533,7 +543,11 @@ For example, if your database_id was `abc12345-1234-5678-abcd-1234567890ab`, you
 
 ### Step 4: Update the Code
 
-**Replace ALL the code in `src/index.js` with:**
+**File to edit: `src/index.js`**
+
+This file is inside the `src` folder.
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {

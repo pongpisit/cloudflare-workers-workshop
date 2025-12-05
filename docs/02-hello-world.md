@@ -55,7 +55,9 @@ code .
 
 ## Step 2: Understand the Basic Code
 
-**Open `src/index.js` in VS Code.**
+**In VS Code, open the file `src/index.js`**
+
+You can find it in the left sidebar under your project folder.
 
 You will see this code:
 
@@ -101,7 +103,9 @@ http://localhost:8787
 
 ## Step 4: Change the Response Text
 
-**In VS Code, change the code to:**
+**File to edit: `src/index.js`**
+
+Change the code to:
 
 ```javascript
 export default {
@@ -123,7 +127,9 @@ You should see your new message!
 
 Workers can return JSON data like a real API.
 
-**Replace ALL the code with:**
+**File to edit: `src/index.js`**
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
@@ -160,7 +166,9 @@ You should see JSON data:
 
 Let's make your Worker respond differently based on the URL.
 
-**Replace ALL the code with:**
+**File to edit: `src/index.js`**
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
@@ -207,7 +215,9 @@ export default {
 
 Workers can return full HTML pages.
 
-**Replace ALL the code with:**
+**File to edit: `src/index.js`**
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
@@ -273,7 +283,9 @@ Your Worker is now live on the internet!
 
 Now let's use what you learned to build a real application - a personal profile page like Linktree.
 
-**Replace ALL the code in `src/index.js` with:**
+**File to edit: `src/index.js`**
+
+**Delete everything in the file and paste this code:**
 
 ```javascript
 export default {
