@@ -442,24 +442,44 @@ Your image gallery is now live on the internet!
 
 Now let's build an Instagram-style app with captions using D1 database.
 
-### Step 1: Create a D1 Database
+**IMPORTANT: Follow each step carefully. Do not skip any step.**
 
-**Run this command:**
+---
+
+### Step 1: Stop the Server
+
+If your server is running, press **Ctrl + C** to stop it.
+
+---
+
+### Step 2: Create a D1 Database
+
+**Run this command in PowerShell:**
 ```powershell
 npx wrangler d1 create my-photos-db
 ```
 
-You will see output like:
+**You will see output like this:**
 ```
-Created database 'my-photos-db'
-database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+Successfully created DB 'my-photos-db'
+
+[[d1_databases]]
+binding = "DB"
+database_name = "my-photos-db"
+database_id = "abc12345-1234-5678-abcd-1234567890ab"
 ```
 
-**Copy the database_id for the next step.**
+**IMPORTANT: Copy your `database_id` value. You will need it in the next step.**
 
-### Step 2: Update wrangler.jsonc
+Your database_id will be different from the example above.
 
-**Replace ALL content in `wrangler.jsonc` with:**
+---
+
+### Step 3: Update wrangler.jsonc
+
+**Open `wrangler.jsonc` in VS Code.**
+
+**Delete everything and paste this code:**
 
 ```json
 {
@@ -476,33 +496,42 @@ database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     {
       "binding": "DB",
       "database_name": "my-photos-db",
-      "database_id": "YOUR_DATABASE_ID_HERE"
+      "database_id": "PASTE_YOUR_DATABASE_ID_HERE"
     }
   ]
 }
 ```
 
-**Replace `YOUR_DATABASE_ID_HERE` with your actual database_id.**
+**IMPORTANT: Replace `PASTE_YOUR_DATABASE_ID_HERE` with your actual database_id from Step 2.**
 
-### Step 3: Create the Photos Table
+For example, if your database_id was `abc12345-1234-5678-abcd-1234567890ab`, your file should look like:
 
-**Create a file called `schema.sql` in your project folder:**
-
-```sql
-CREATE TABLE IF NOT EXISTS photos (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  filename TEXT NOT NULL,
-  caption TEXT,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+```json
+{
+  "name": "my-gallery",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-01",
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "my-photos"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-photos-db",
+      "database_id": "abc12345-1234-5678-abcd-1234567890ab"
+    }
+  ]
+}
 ```
 
-**Run this command to create the table:**
-```powershell
-npx wrangler d1 execute my-photos-db --local --file=schema.sql
-```
+**Save the file (Ctrl + S)**
 
-### Step 4: Create the Instagram-Style App
+---
+
+### Step 4: Update the Code
 
 **Replace ALL the code in `src/index.js` with:**
 
@@ -656,7 +685,19 @@ async function showFeed(env) {
 }
 ```
 
+**Save the file (Ctrl + S)**
+
+---
+
 ### Step 5: Test the App
+
+**Make sure you completed Steps 1-4 before continuing.**
+
+**Checklist before testing:**
+- [ ] Created D1 database with `npx wrangler d1 create my-photos-db`
+- [ ] Updated `wrangler.jsonc` with your database_id
+- [ ] Updated `src/index.js` with the new code
+- [ ] Saved both files
 
 **Start the local server:**
 ```powershell
@@ -668,21 +709,48 @@ npm run dev
 http://localhost:8787
 ```
 
+**You should see the PhotoGram app.**
+
 **Try these features:**
 1. Click "New Post"
-2. Select a photo
-3. Write a caption
+2. Select a photo from your computer
+3. Write a caption (e.g., "My first post!")
 4. Click "Share"
 5. See your post with caption in the feed
 
+---
+
 ### Step 6: Deploy
 
-**Deploy:**
+**Stop the server (Ctrl + C)**
+
+**Deploy to the internet:**
 ```powershell
 npm run deploy
 ```
 
 The database table will be created automatically on first visit.
+
+---
+
+### Troubleshooting
+
+**Error: Cannot read properties of undefined (reading 'exec')**
+
+This means `env.DB` is not defined. Check these:
+
+1. Did you create the D1 database? Run: `npx wrangler d1 create my-photos-db`
+2. Did you add `d1_databases` to `wrangler.jsonc`?
+3. Did you replace `PASTE_YOUR_DATABASE_ID_HERE` with your actual database_id?
+4. Did you save `wrangler.jsonc`?
+5. Did you restart the server after saving?
+
+**Error: no such table: photos**
+
+The database table was not created. This should auto-create, but if it doesn't:
+1. Stop the server (Ctrl + C)
+2. Restart with `npm run dev`
+3. Refresh the browser
 
 ---
 
