@@ -146,7 +146,7 @@ This file is in the root of your project folder.
   ],
   "d1_databases": [
     {
-      "binding": "DB",
+      "binding": "my_app_db",
       "database_name": "my-app-db",
       "database_id": "<paste-your-database-id-here>"
     }
@@ -232,7 +232,7 @@ export default {
       });
       
       // Store caption in D1
-      await env.DB.prepare("INSERT INTO photos (filename, caption) VALUES (?, ?)")
+      await env.my_app_db.prepare("INSERT INTO photos (filename, caption) VALUES (?, ?)")
         .bind(filename, caption)
         .run();
       
@@ -241,7 +241,7 @@ export default {
 
     // List media
     if (url.pathname === "/api/media" && request.method === "GET") {
-      const { results } = await env.DB.prepare(
+      const { results } = await env.my_app_db.prepare(
         "SELECT * FROM photos ORDER BY created_at DESC"
       ).all();
       
@@ -258,7 +258,7 @@ export default {
     if (url.pathname.startsWith("/api/delete/") && request.method === "POST") {
       const filename = url.pathname.replace("/api/delete/", "");
       await env.MEDIA.delete(filename);
-      await env.DB.prepare("DELETE FROM photos WHERE filename = ?").bind(filename).run();
+      await env.my_app_db.prepare("DELETE FROM photos WHERE filename = ?").bind(filename).run();
       return Response.json({ success: true });
     }
 
