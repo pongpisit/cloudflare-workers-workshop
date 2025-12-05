@@ -139,19 +139,19 @@ export default {
 
     // ===== PAGE ROUTES =====
     if (url.pathname === "/" || url.pathname === "") {
-      return new Response(HOME_PAGE, { headers: { "content-type": "text/html" } });
+      return new Response(getHomePage(), { headers: { "content-type": "text/html" } });
     }
     if (url.pathname === "/profile") {
-      return new Response(PROFILE_PAGE, { headers: { "content-type": "text/html" } });
+      return new Response(getProfilePage(), { headers: { "content-type": "text/html" } });
     }
     if (url.pathname === "/gallery") {
-      return new Response(GALLERY_PAGE, { headers: { "content-type": "text/html" } });
+      return new Response(getGalleryPage(), { headers: { "content-type": "text/html" } });
     }
     if (url.pathname === "/chat") {
-      return new Response(CHAT_PAGE, { headers: { "content-type": "text/html" } });
+      return new Response(getChatPage(), { headers: { "content-type": "text/html" } });
     }
     if (url.pathname === "/image-gen") {
-      return new Response(IMAGE_GEN_PAGE, { headers: { "content-type": "text/html" } });
+      return new Response(getImageGenPage(), { headers: { "content-type": "text/html" } });
     }
 
     // ===== API ROUTES =====
@@ -234,7 +234,7 @@ export default {
   }
 };
 
-// ===== SHARED STYLES & NAV =====
+// ===== SHARED STYLES =====
 const NAV_STYLE = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
@@ -249,7 +249,8 @@ const NAV_STYLE = `
   .subtitle { color: #64748b; margin-bottom: 30px; }
 `;
 
-const NAV_HTML = (active) => `
+function getNavHtml(active) {
+  return `
   <nav>
     <a href="/" class="logo">My App</a>
     <div class="nav-links">
@@ -259,11 +260,12 @@ const NAV_HTML = (active) => `
       <a href="/chat" class="${active === 'chat' ? 'active' : ''}">AI Chat</a>
       <a href="/image-gen" class="${active === 'image-gen' ? 'active' : ''}">Image Gen</a>
     </div>
-  </nav>
-`;
+  </nav>`;
+}
 
 // ===== HOME PAGE =====
-const HOME_PAGE = `<!DOCTYPE html>
+function getHomePage() {
+  return `<!DOCTYPE html>
 <html><head><title>My Complete App</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
@@ -273,84 +275,88 @@ const HOME_PAGE = `<!DOCTYPE html>
   .apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto; padding: 0 20px; }
   .app-card { background: #1e293b; border-radius: 12px; padding: 25px; text-align: center; text-decoration: none; color: white; transition: transform 0.2s, box-shadow 0.2s; }
   .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-  .app-card .icon { font-size: 40px; margin-bottom: 15px; }
+  .app-card .icon { font-size: 40px; margin-bottom: 15px; font-weight: bold; color: #f97316; }
   .app-card h3 { margin-bottom: 10px; }
   .app-card p { color: #64748b; font-size: 14px; }
   .module-tag { background: #334155; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #94a3b8; margin-top: 10px; display: inline-block; }
 </style></head>
 <body>
-  ${NAV_HTML('home')}
+  ${getNavHtml('home')}
   <div class="hero">
     <h1>Welcome!</h1>
     <p>Your complete Cloudflare Workers app</p>
   </div>
   <div class="apps">
     <a href="/profile" class="app-card">
-      <div class="icon">👤</div>
+      <div class="icon">01</div>
       <h3>Profile</h3>
       <p>Personal Linktree-style page</p>
       <span class="module-tag">Module 02</span>
     </a>
     <a href="/gallery" class="app-card">
-      <div class="icon">🖼️</div>
+      <div class="icon">02</div>
       <h3>Gallery</h3>
       <p>Photo gallery with R2 storage</p>
       <span class="module-tag">Module 03</span>
     </a>
     <a href="/chat" class="app-card">
-      <div class="icon">💬</div>
+      <div class="icon">03</div>
       <h3>AI Chat</h3>
       <p>Chat with multiple AI models</p>
       <span class="module-tag">Module 04</span>
     </a>
     <a href="/image-gen" class="app-card">
-      <div class="icon">🎨</div>
+      <div class="icon">04</div>
       <h3>Image Gen</h3>
       <p>Generate images from text</p>
       <span class="module-tag">Module 04</span>
     </a>
   </div>
 </body></html>`;
+}
 
 // ===== PROFILE PAGE (Module 02) =====
-const PROFILE_PAGE = `<!DOCTYPE html>
+function getProfilePage() {
+  return `<!DOCTYPE html>
 <html><head><title>My Profile</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
   .profile { max-width: 400px; margin: 40px auto; text-align: center; padding: 0 20px; }
-  .avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #ec4899); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+  .avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #ec4899); margin: 0 auto 20px; }
   .name { font-size: 28px; margin-bottom: 5px; }
   .bio { color: #64748b; margin-bottom: 30px; }
   .links { display: flex; flex-direction: column; gap: 12px; }
   .link { background: #1e293b; padding: 15px 20px; border-radius: 10px; color: white; text-decoration: none; display: flex; align-items: center; gap: 12px; transition: background 0.2s; }
   .link:hover { background: #334155; }
-  .link-icon { font-size: 20px; }
+  .link-icon { font-size: 14px; background: #334155; padding: 5px 8px; border-radius: 4px; }
 </style></head>
 <body>
-  ${NAV_HTML('profile')}
+  ${getNavHtml('profile')}
   <div class="profile">
-    <div class="avatar">👤</div>
+    <div class="avatar"></div>
     <h1 class="name">Your Name</h1>
     <p class="bio">Developer | Creator | Learner</p>
     <div class="links">
       <a href="https://github.com" class="link" target="_blank">
-        <span class="link-icon">💻</span> GitHub
+        <span class="link-icon">GH</span> GitHub
       </a>
       <a href="https://twitter.com" class="link" target="_blank">
-        <span class="link-icon">🐦</span> Twitter
+        <span class="link-icon">TW</span> Twitter
       </a>
       <a href="https://linkedin.com" class="link" target="_blank">
-        <span class="link-icon">💼</span> LinkedIn
+        <span class="link-icon">LI</span> LinkedIn
       </a>
       <a href="mailto:you@example.com" class="link">
-        <span class="link-icon">📧</span> Email Me
+        <span class="link-icon">EM</span> Email Me
       </a>
     </div>
   </div>
 </body></html>`;
+}
 
 // ===== GALLERY PAGE (Module 03) =====
-const GALLERY_PAGE = `<!DOCTYPE html>
+function getGalleryPage() {
+  return `<!DOCTYPE html>
 <html><head><title>Photo Gallery</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
@@ -367,13 +373,12 @@ const GALLERY_PAGE = `<!DOCTYPE html>
   .photo-card img { width: 100%; height: 200px; object-fit: cover; }
   .photo-info { padding: 15px; }
   .photo-caption { margin-bottom: 10px; }
-  .photo-date { font-size: 12px; color: #64748b; }
-  .delete-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 12px; margin-top: 10px; }
+  .delete-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 12px; }
   .delete-btn:hover { text-decoration: underline; }
   .empty { text-align: center; padding: 60px; color: #64748b; }
 </style></head>
 <body>
-  ${NAV_HTML('gallery')}
+  ${getNavHtml('gallery')}
   <div class="container">
     <h1>Photo Gallery</h1>
     <p class="subtitle">Upload and share your photos (stored in R2)</p>
@@ -399,15 +404,15 @@ const GALLERY_PAGE = `<!DOCTYPE html>
           gallery.innerHTML = '<div class="empty">No photos yet. Upload your first photo!</div>';
           return;
         }
-        gallery.innerHTML = photos.reverse().map(p => \`
-          <div class="photo-card">
-            <img src="\${p.url}" alt="">
-            <div class="photo-info">
-              <p class="photo-caption">\${p.caption || 'No caption'}</p>
-              <button class="delete-btn" onclick="deletePhoto('\${p.name}')">Delete</button>
-            </div>
-          </div>
-        \`).join('');
+        gallery.innerHTML = photos.reverse().map(p => 
+          '<div class="photo-card">' +
+            '<img src="' + p.url + '" alt="">' +
+            '<div class="photo-info">' +
+              '<p class="photo-caption">' + (p.caption || 'No caption') + '</p>' +
+              '<button class="delete-btn" onclick="deletePhoto(\\'' + p.name + '\\')">Delete</button>' +
+            '</div>' +
+          '</div>'
+        ).join('');
       } catch (e) {
         gallery.innerHTML = '<div class="empty">Failed to load photos</div>';
       }
@@ -447,9 +452,11 @@ const GALLERY_PAGE = `<!DOCTYPE html>
     loadGallery();
   </script>
 </body></html>`;
+}
 
 // ===== AI CHAT PAGE (Module 04) =====
-const CHAT_PAGE = `<!DOCTYPE html>
+function getChatPage() {
+  return `<!DOCTYPE html>
 <html><head><title>AI Chat</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
@@ -468,7 +475,7 @@ const CHAT_PAGE = `<!DOCTYPE html>
   .input-area button { padding: 12px 25px; background: #f97316; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 </style></head>
 <body>
-  ${NAV_HTML('chat')}
+  ${getNavHtml('chat')}
   <div class="container">
     <h1>AI Chat</h1>
     <p class="subtitle">Chat with different AI models</p>
@@ -532,9 +539,11 @@ const CHAT_PAGE = `<!DOCTYPE html>
     }
   </script>
 </body></html>`;
+}
 
 // ===== IMAGE GENERATION PAGE (Module 04) =====
-const IMAGE_GEN_PAGE = `<!DOCTYPE html>
+function getImageGenPage() {
+  return `<!DOCTYPE html>
 <html><head><title>Image Generator</title><meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   ${NAV_STYLE}
@@ -553,7 +562,7 @@ const IMAGE_GEN_PAGE = `<!DOCTYPE html>
   .result p { color: #64748b; margin-top: 10px; font-size: 12px; }
 </style></head>
 <body>
-  ${NAV_HTML('image-gen')}
+  ${getNavHtml('image-gen')}
   <div class="container">
     <h1>Image Generator</h1>
     <p class="subtitle">Generate images from text using AI</p>
@@ -614,6 +623,7 @@ const IMAGE_GEN_PAGE = `<!DOCTYPE html>
     }
   </script>
 </body></html>`;
+}
 ```
 
 **Save (Ctrl + S)**
