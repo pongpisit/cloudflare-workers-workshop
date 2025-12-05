@@ -239,6 +239,15 @@ Before moving to the next module, make sure you have completed:
 
 ## Having Problems?
 
+Expand the details below for solutions to common problems. 
+
+Otherwise, you may proceed to [Module 2 > Step 4: Change the Response Text](./02-hello-world.md#step-4-change-the-response-text) where you will complete your project via Cloudflare's dashboard instead. 
+
+<details>
+
+<summary>Expand for details</summary>
+
+
 ### Problem: "node is not recognized"
 
 **Solution:** Restart your computer and try again.
@@ -271,6 +280,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 5. Type `Y` and press Enter
 6. Try again
+
+</details>
 
 ---
 
