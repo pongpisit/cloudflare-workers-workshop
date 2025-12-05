@@ -1,6 +1,16 @@
-# Complete App - Ready to Deploy
+# Complete App - All-in-One
 
-This is a complete Cloudflare Workers app with AI Chat and Image/Video Gallery.
+This is a complete Cloudflare Workers app combining all workshop modules (02-04) with navigation.
+
+## Features
+
+| Page | Route | Description |
+|------|-------|-------------|
+| Home | `/` | Navigation hub with links to all apps |
+| Profile | `/profile` | Linktree-style personal page (Module 02) |
+| Gallery | `/gallery` | Photo upload with captions, R2 storage (Module 03) |
+| AI Chat | `/chat` | Multi-model chatbot (Module 04) |
+| Image Gen | `/image-gen` | Text-to-image AI generation (Module 04) |
 
 ## Quick Deploy
 
@@ -21,13 +31,6 @@ npm run deploy
 
 Done! Open the URL shown in the terminal.
 
-## Features
-
-- AI Chat with multiple models to choose from
-- Image and Video Gallery with R2 storage
-- Dark theme UI
-- Runs globally on Cloudflare edge network
-
 ## Local Development
 
 ```powershell
@@ -35,6 +38,17 @@ npm run dev -- --remote
 ```
 
 Open: http://localhost:8787
+
+## API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/chat` | POST | Send message to AI model |
+| `/api/generate-image` | POST | Generate image from text |
+| `/api/upload` | POST | Upload photo with caption |
+| `/api/media` | GET | List all photos |
+| `/api/delete/:filename` | POST | Delete a photo |
+| `/media/:filename` | GET | Serve photo file |
 
 ## Wrangler Answers
 
