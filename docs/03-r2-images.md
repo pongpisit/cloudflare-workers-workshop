@@ -438,9 +438,71 @@ Your image gallery is now live on the internet!
 
 ---
 
-## Real World Example: Photo Sharing App
+## Real World Example: Instagram-Style Photo App with Captions
 
-Now let's enhance the gallery into a photo sharing app with a better UI.
+Now let's build an Instagram-style app with captions using D1 database.
+
+### Step 1: Create a D1 Database
+
+**Run this command:**
+```powershell
+npx wrangler d1 create my-photos-db
+```
+
+You will see output like:
+```
+Created database 'my-photos-db'
+database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+```
+
+**Copy the database_id for the next step.**
+
+### Step 2: Update wrangler.jsonc
+
+**Replace ALL content in `wrangler.jsonc` with:**
+
+```json
+{
+  "name": "my-gallery",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-01",
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "my-photos"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-photos-db",
+      "database_id": "YOUR_DATABASE_ID_HERE"
+    }
+  ]
+}
+```
+
+**Replace `YOUR_DATABASE_ID_HERE` with your actual database_id.**
+
+### Step 3: Create the Photos Table
+
+**Create a file called `schema.sql` in your project folder:**
+
+```sql
+CREATE TABLE IF NOT EXISTS photos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  filename TEXT NOT NULL,
+  caption TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Run this command to create the table:**
+```powershell
+npx wrangler d1 execute my-photos-db --local --file=schema.sql
+```
+
+### Step 4: Create the Instagram-Style App
 
 **Replace ALL the code in `src/index.js` with:**
 
@@ -449,16 +511,38 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === "/") return showGallery(env);
+    // Initialize database table
+    if (url.pathname === "/init") {
+      await env.DB.exec(`CREATE TABLE IF NOT EXISTS photos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        filename TEXT NOT NULL,
+        caption TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`);
+      return new Response("Database initialized");
+    }
+
+    if (url.pathname === "/") return showFeed(env);
+    
     if (url.pathname === "/upload" && request.method === "POST") {
       const formData = await request.formData();
       const file = formData.get("image");
+      const caption = formData.get("caption") || "";
+      
       if (!file) return new Response("No file", { status: 400 });
-      await env.BUCKET.put(Date.now() + "-" + file.name, file.stream(), {
+      
+      const filename = Date.now() + "-" + file.name;
+      await env.BUCKET.put(filename, file.stream(), {
         httpMetadata: { contentType: file.type }
       });
+      
+      await env.DB.prepare("INSERT INTO photos (filename, caption) VALUES (?, ?)")
+        .bind(filename, caption)
+        .run();
+      
       return Response.redirect(new URL("/", request.url).toString(), 302);
     }
+    
     if (url.pathname.startsWith("/image/")) {
       const object = await env.BUCKET.get(url.pathname.replace("/image/", ""));
       if (!object) return new Response("Not found", { status: 404 });
@@ -466,118 +550,153 @@ export default {
         headers: { "content-type": object.httpMetadata?.contentType || "image/jpeg" }
       });
     }
+    
     if (url.pathname.startsWith("/delete/") && request.method === "POST") {
-      await env.BUCKET.delete(url.pathname.replace("/delete/", ""));
+      const id = url.pathname.replace("/delete/", "");
+      const photo = await env.DB.prepare("SELECT filename FROM photos WHERE id = ?").bind(id).first();
+      if (photo) {
+        await env.BUCKET.delete(photo.filename);
+        await env.DB.prepare("DELETE FROM photos WHERE id = ?").bind(id).run();
+      }
       return Response.redirect(new URL("/", request.url).toString(), 302);
     }
+    
+    if (url.pathname === "/api/photos") {
+      const { results } = await env.DB.prepare("SELECT * FROM photos ORDER BY created_at DESC").all();
+      return Response.json(results);
+    }
+    
     return new Response("Not found", { status: 404 });
   }
 };
 
-async function showGallery(env) {
-  const list = await env.BUCKET.list();
-  let images = "";
+async function showFeed(env) {
+  const { results: photos } = await env.DB.prepare(
+    "SELECT * FROM photos ORDER BY created_at DESC"
+  ).all();
   
-  if (list.objects.length === 0) {
-    images = '<p class="empty">No photos yet. Upload your first photo!</p>';
+  let postsHtml = "";
+  if (photos.length === 0) {
+    postsHtml = '<p class="empty">No posts yet. Share your first photo!</p>';
   } else {
-    for (const obj of list.objects.sort((a, b) => new Date(b.uploaded) - new Date(a.uploaded))) {
-      images += `
-        <div class="photo">
-          <img src="/image/${obj.key}" onclick="this.parentElement.classList.toggle('expanded')">
-          <div class="overlay">
-            <form action="/delete/${obj.key}" method="POST">
-              <button type="submit" onclick="return confirm('Delete this photo?')">Delete</button>
+    for (const photo of photos) {
+      const date = new Date(photo.created_at).toLocaleDateString();
+      postsHtml += `
+        <article class="post">
+          <img src="/image/${photo.filename}" alt="">
+          <div class="post-content">
+            <p class="caption">${photo.caption || ""}</p>
+            <p class="date">${date}</p>
+            <form action="/delete/${photo.id}" method="POST" class="delete-form">
+              <button type="submit" onclick="return confirm('Delete this post?')">Delete</button>
             </form>
           </div>
-        </div>`;
+        </article>`;
     }
   }
 
   return new Response(`<!DOCTYPE html>
 <html>
 <head>
-  <title>Photo Sharing</title>
+  <title>PhotoGram</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: system-ui, sans-serif; background: #111; color: white; min-height: 100vh; }
+    body { font-family: system-ui, sans-serif; background: #fafafa; min-height: 100vh; }
     
-    header { background: #000; padding: 15px 20px; border-bottom: 1px solid #333; }
-    .header-content { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    h1 { font-size: 20px; }
+    header { background: white; border-bottom: 1px solid #dbdbdb; padding: 12px 20px; position: sticky; top: 0; z-index: 100; }
+    .header-content { max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: 600; font-style: italic; }
     
-    .upload-btn { background: #0095f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
-    .upload-btn:hover { background: #1877f2; }
+    .new-post-btn { background: #0095f6; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    .new-post-btn:hover { background: #1877f2; }
     
-    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; }
+    .feed { max-width: 600px; margin: 20px auto; padding: 0 20px; }
+    
+    .post { background: white; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+    .post img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .post-content { padding: 15px; }
+    .caption { font-size: 14px; line-height: 1.5; margin-bottom: 8px; }
+    .date { font-size: 12px; color: #8e8e8e; margin-bottom: 10px; }
+    .delete-form button { background: none; border: none; color: #ed4956; cursor: pointer; font-size: 12px; }
+    .delete-form button:hover { text-decoration: underline; }
+    
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; justify-content: center; align-items: center; }
     .modal.active { display: flex; }
-    .modal-box { background: #222; padding: 30px; border-radius: 12px; text-align: center; }
-    .modal-box h2 { margin-bottom: 20px; }
-    .modal-box input { margin: 10px 0; }
-    .modal-box button { background: #0095f6; color: white; border: none; padding: 10px 30px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-    .close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 30px; cursor: pointer; }
+    .modal-box { background: white; border-radius: 12px; padding: 20px; width: 90%; max-width: 400px; }
+    .modal-box h2 { margin-bottom: 15px; font-size: 18px; }
+    .modal-box input[type="file"] { margin-bottom: 15px; }
+    .modal-box textarea { width: 100%; height: 80px; border: 1px solid #dbdbdb; border-radius: 8px; padding: 10px; resize: none; font-family: inherit; margin-bottom: 15px; }
+    .modal-box button[type="submit"] { width: 100%; background: #0095f6; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: white; font-size: 30px; cursor: pointer; }
     
-    .gallery { max-width: 1000px; margin: 20px auto; padding: 0 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-    @media (max-width: 600px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
-    
-    .photo { position: relative; aspect-ratio: 1; overflow: hidden; cursor: pointer; }
-    .photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-    .photo:hover img { transform: scale(1.05); }
-    .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.2s; }
-    .photo:hover .overlay { opacity: 1; }
-    .overlay button { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-    
-    .photo.expanded { position: fixed; inset: 0; z-index: 50; aspect-ratio: auto; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; }
-    .photo.expanded img { width: auto; height: auto; max-width: 95%; max-height: 95%; object-fit: contain; }
-    .photo.expanded .overlay { display: none; }
-    
-    .empty { grid-column: 1 / -1; text-align: center; padding: 60px; color: #666; }
+    .empty { text-align: center; padding: 60px 20px; color: #8e8e8e; }
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
-      <h1>Photo Sharing</h1>
-      <button class="upload-btn" onclick="document.getElementById('modal').classList.add('active')">Upload Photo</button>
+      <div class="logo">PhotoGram</div>
+      <button class="new-post-btn" onclick="document.getElementById('modal').classList.add('active')">New Post</button>
     </div>
   </header>
   
   <div id="modal" class="modal" onclick="if(event.target===this)this.classList.remove('active')">
-    <button class="close" onclick="document.getElementById('modal').classList.remove('active')">&times;</button>
+    <button class="close-btn" onclick="document.getElementById('modal').classList.remove('active')">&times;</button>
     <div class="modal-box">
-      <h2>Upload Photo</h2>
+      <h2>Create New Post</h2>
       <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required><br>
-        <button type="submit">Upload</button>
+        <input type="file" name="image" accept="image/*" required>
+        <textarea name="caption" placeholder="Write a caption..."></textarea>
+        <button type="submit">Share</button>
       </form>
     </div>
   </div>
   
-  <div class="gallery">${images}</div>
+  <div class="feed">${postsHtml}</div>
 </body>
 </html>`, { headers: { "content-type": "text/html" } });
 }
 ```
 
-**Save and test:**
+### Step 5: Test the App
+
+**Start the local server:**
 ```powershell
 npm run dev
 ```
 
-**Open:** http://localhost:8787
+**First, initialize the database by visiting:**
+```
+http://localhost:8787/init
+```
 
-This photo sharing app includes:
-- Dark theme UI
-- Click to expand photos full screen
-- Hover to show delete button
-- Modal for uploading
-- Responsive grid layout
+**Then go to the main page:**
+```
+http://localhost:8787
+```
 
-**Deploy when ready:**
+**Try these features:**
+1. Click "New Post"
+2. Select a photo
+3. Write a caption
+4. Click "Share"
+5. See your post with caption in the feed
+
+### Step 6: Deploy
+
+**Create the production database table:**
+```powershell
+npx wrangler d1 execute my-photos-db --remote --file=schema.sql
+```
+
+**Deploy:**
 ```powershell
 npm run deploy
 ```
+
+**Initialize the remote database:**
+Visit `https://your-worker.workers.dev/init`
 
 ---
 
@@ -592,11 +711,15 @@ npm run deploy
 | List files in R2 | |
 | Delete files from R2 | |
 | Build image gallery | |
-| Build photo sharing app | |
+| Create D1 database | |
+| Store captions in D1 | |
+| Build Instagram-style app | |
 
 ---
 
-## Key R2 Operations
+## Key Operations
+
+**R2 (File Storage):**
 
 | Operation | Code |
 |-----------|------|
@@ -605,20 +728,29 @@ npm run deploy
 | List | `await env.BUCKET.list()` |
 | Delete | `await env.BUCKET.delete(key)` |
 
+**D1 (Database):**
+
+| Operation | Code |
+|-----------|------|
+| Insert | `await env.DB.prepare("INSERT...").bind(...).run()` |
+| Select | `await env.DB.prepare("SELECT...").all()` |
+| Delete | `await env.DB.prepare("DELETE...").bind(...).run()` |
+
 ---
 
 ## Quick Reference
 
 | Command | What It Does |
 |---------|--------------|
-| `npx wrangler r2 bucket create name` | Create bucket |
-| `npx wrangler r2 bucket list` | List buckets |
-| `npx wrangler r2 bucket delete name` | Delete bucket |
+| `npx wrangler r2 bucket create name` | Create R2 bucket |
+| `npx wrangler d1 create name` | Create D1 database |
+| `npx wrangler d1 execute name --local --file=schema.sql` | Run SQL locally |
+| `npx wrangler d1 execute name --remote --file=schema.sql` | Run SQL on production |
 
 ---
 
 ## Next Module
 
-You now know how to store and serve files with R2!
+You now know how to store files with R2 and data with D1!
 
 **Next:** [Module 4: AI Chatbot](./04-ai-chatbot.md)

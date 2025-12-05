@@ -10,7 +10,7 @@ Learn to build applications with **Cloudflare Workers** and **AI**. Complete in 
 |--------|-------|
 | 1 | Setup your development environment |
 | 2 | Create Workers, return text/JSON/HTML |
-| 3 | Store and serve files with R2 |
+| 3 | Store files with R2, data with D1 |
 | 4 | Build AI chatbot with Workers AI |
 | 5 | Complete app with all features |
 
@@ -22,7 +22,7 @@ Learn to build applications with **Cloudflare Workers** and **AI**. Complete in 
 |---|--------|------|-------------|
 | 1 | [Setup](./docs/01-prerequisites.md) | 20 min | Install Node.js, Wrangler, VS Code |
 | 2 | [Hello World](./docs/02-hello-world.md) | 25 min | Learn Worker basics step by step |
-| 3 | [R2 Storage](./docs/03-r2-images.md) | 30 min | Store and serve images with R2 |
+| 3 | [R2 + D1](./docs/03-r2-images.md) | 40 min | Store images with R2, captions with D1 |
 | 4 | [AI Chatbot](./docs/04-ai-chatbot.md) | 40 min | Build AI chat, try different models |
 | 5 | [Complete App](./docs/05-complete-app.md) | 10 min | Clone and deploy everything |
 
