@@ -494,7 +494,7 @@ Your database_id will be different from the example above.
   ],
   "d1_databases": [
     {
-      "binding": "DB",
+      "binding": "MY_PHOTOS_DB",
       "database_name": "my-photos-db",
       "database_id": "PASTE_YOUR_DATABASE_ID_HERE"
     }
@@ -519,7 +519,7 @@ For example, if your database_id was `abc12345-1234-5678-abcd-1234567890ab`, you
   ],
   "d1_databases": [
     {
-      "binding": "DB",
+      "binding": "MY_PHOTOS_DB",
       "database_name": "my-photos-db",
       "database_id": "abc12345-1234-5678-abcd-1234567890ab"
     }
@@ -541,7 +541,7 @@ export default {
     const url = new URL(request.url);
 
     // Auto-initialize database table on every request
-    await env.DB.exec(`CREATE TABLE IF NOT EXISTS photos (
+    await env.MY_PHOTOS_DB.exec(`CREATE TABLE IF NOT EXISTS photos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       filename TEXT NOT NULL,
       caption TEXT,
@@ -562,7 +562,7 @@ export default {
         httpMetadata: { contentType: file.type }
       });
       
-      await env.DB.prepare("INSERT INTO photos (filename, caption) VALUES (?, ?)")
+      await env.MY_PHOTOS_DB.prepare("INSERT INTO photos (filename, caption) VALUES (?, ?)")
         .bind(filename, caption)
         .run();
       
@@ -579,16 +579,16 @@ export default {
     
     if (url.pathname.startsWith("/delete/") && request.method === "POST") {
       const id = url.pathname.replace("/delete/", "");
-      const photo = await env.DB.prepare("SELECT filename FROM photos WHERE id = ?").bind(id).first();
+      const photo = await env.MY_PHOTOS_DB.prepare("SELECT filename FROM photos WHERE id = ?").bind(id).first();
       if (photo) {
         await env.BUCKET.delete(photo.filename);
-        await env.DB.prepare("DELETE FROM photos WHERE id = ?").bind(id).run();
+        await env.MY_PHOTOS_DB.prepare("DELETE FROM photos WHERE id = ?").bind(id).run();
       }
       return Response.redirect(new URL("/", request.url).toString(), 302);
     }
     
     if (url.pathname === "/api/photos") {
-      const { results } = await env.DB.prepare("SELECT * FROM photos ORDER BY created_at DESC").all();
+      const { results } = await env.MY_PHOTOS_DB.prepare("SELECT * FROM photos ORDER BY created_at DESC").all();
       return Response.json(results);
     }
     
@@ -597,7 +597,7 @@ export default {
 };
 
 async function showFeed(env) {
-  const { results: photos } = await env.DB.prepare(
+  const { results: photos } = await env.MY_PHOTOS_DB.prepare(
     "SELECT * FROM photos ORDER BY created_at DESC"
   ).all();
   
@@ -737,7 +737,7 @@ The database table will be created automatically on first visit.
 
 **Error: Cannot read properties of undefined (reading 'exec')**
 
-This means `env.DB` is not defined. Check these:
+This means `env.MY_PHOTOS_DB` is not defined. Check these:
 
 1. Did you create the D1 database? Run: `npx wrangler d1 create my-photos-db`
 2. Did you add `d1_databases` to `wrangler.jsonc`?
@@ -786,9 +786,9 @@ The database table was not created. This should auto-create, but if it doesn't:
 
 | Operation | Code |
 |-----------|------|
-| Insert | `await env.DB.prepare("INSERT...").bind(...).run()` |
-| Select | `await env.DB.prepare("SELECT...").all()` |
-| Delete | `await env.DB.prepare("DELETE...").bind(...).run()` |
+| Insert | `await env.MY_PHOTOS_DB.prepare("INSERT...").bind(...).run()` |
+| Select | `await env.MY_PHOTOS_DB.prepare("SELECT...").all()` |
+| Delete | `await env.MY_PHOTOS_DB.prepare("DELETE...").bind(...).run()` |
 
 ---
 
