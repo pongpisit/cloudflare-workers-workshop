@@ -508,7 +508,7 @@ Want to add more models?
 
 **File to edit: `src/index.js`**
 
-Find the `model-buttons` section (around line 286) and add more buttons:
+Find the `model-buttons` section (around line 2XX) and add more buttons:
 
 ```html
 <button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">
