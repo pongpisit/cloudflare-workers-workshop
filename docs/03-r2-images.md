@@ -510,7 +510,7 @@ Your database_id will be different from the example above.
 **Create D1 database. Go to: Storage & databases* >D1 SQL database > Create Databse >**
 
 **Add binding to your worker. Go to Workers & Pages > my-gallery > Bindings > Add binding > D1 database > Add Binding**
-- Variable name: `DB`
+- Variable name: `MY_PHOTOS_DB`
 - Database name: `my-photos-db`
 
 ---
