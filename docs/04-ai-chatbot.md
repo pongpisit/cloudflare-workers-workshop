@@ -654,9 +654,33 @@ export default {
       const { imageUrl } = await request.json();
       
       try {
-        // Fetch the image
-        const imageResponse = await fetch(imageUrl);
+        // Fetch the image with proper headers
+        const imageResponse = await fetch(imageUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; CloudflareWorker)',
+            'Accept': 'image/*'
+          }
+        });
+        
+        // Check if we got an image
+        const contentType = imageResponse.headers.get('content-type') || '';
+        if (!contentType.startsWith('image/')) {
+          return Response.json({ 
+            error: "URL did not return an image. Content-Type: " + contentType,
+            success: false 
+          }, { status: 400 });
+        }
+        
         const imageBuffer = await imageResponse.arrayBuffer();
+        
+        // Check if image is too small (likely an error page)
+        if (imageBuffer.byteLength < 1000) {
+          return Response.json({ 
+            error: "Image too small or invalid. Size: " + imageBuffer.byteLength + " bytes",
+            success: false 
+          }, { status: 400 });
+        }
+        
         const imageArray = [...new Uint8Array(imageBuffer)];
 
         // Use LLaVA model to describe the image
@@ -774,9 +798,9 @@ const HTML = `<!DOCTYPE html>
       
       <div class="examples">
         <p>Try these examples:</p>
-        <button class="example-btn" onclick="setExample('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg')">Cat</button>
-        <button class="example-btn" onclick="setExample('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/YellowLabradorLooking_new.jpg/1200px-YellowLabradorLooking_new.jpg')">Dog</button>
-        <button class="example-btn" onclick="setExample('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png')">Landscape</button>
+        <button class="example-btn" onclick="setExample('https://cataas.com/cat')">Cat</button>
+        <button class="example-btn" onclick="setExample('https://placedog.net/500/400')">Dog</button>
+        <button class="example-btn" onclick="setExample('https://picsum.photos/800/600')">Random</button>
       </div>
       
       <div class="preview" id="preview"></div>
