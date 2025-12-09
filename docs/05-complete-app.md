@@ -727,7 +727,7 @@ Find `PROFILE_PAGE` and update:
 
 Find the `CHAT_PAGE` section and add more model buttons:
 ```html
-<button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">Gemma 7B</button>
+<button class="model-btn" data-model="@cf/google/gemma-3-12b-it">Gemma 3 12B</button>
 ```
 
 ### Change the App Name

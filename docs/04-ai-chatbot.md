@@ -558,7 +558,7 @@ npm run deploy
 | `@cf/meta/llama-3.2-3b-instruct` | 3B | Fast | Quick responses |
 | `@cf/meta/llama-3.2-1b-instruct` | 1B | Fastest | Simple tasks |
 | `@cf/mistral/mistral-7b-instruct-v0.1` | 7B | Medium | Creative writing |
-| `@cf/google/gemma-7b-it-lora` | 7B | Medium | Instructions |
+| `@cf/google/gemma-3-12b-it` | 12B | Medium | Multimodal, 140+ languages |
 | `@cf/qwen/qwen1.5-7b-chat-awq` | 7B | Medium | Multilingual |
 
 ### Image Generation Models
@@ -581,8 +581,8 @@ The code includes 4 models. Try adding 2 more yourself!
 Find the `model-buttons` section (around line 2XX) and add these buttons after the existing ones:
 
 ```html
-<button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">
-  Gemma 7B
+<button class="model-btn" data-model="@cf/google/gemma-3-12b-it">
+  Gemma 3 12B
 </button>
 <button class="model-btn" data-model="@cf/qwen/qwen1.5-7b-chat-awq">
   Qwen 1.5 7B
