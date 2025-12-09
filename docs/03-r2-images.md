@@ -118,7 +118,7 @@ This file is in the root of your project folder (not inside src/).
 
 **Fill in the form:**
 - Variable name: `BUCKET`
-- Bucket name: `my-gallery`
+- Bucket name: `my-photos`
 
 **Deploy :rocket:**
 
