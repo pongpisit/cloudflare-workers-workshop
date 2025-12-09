@@ -578,7 +578,7 @@ The code includes 4 models. Try adding 2 more yourself!
 
 **File to edit: `src/index.js`**
 
-Find the `model-buttons` section (around line 294) and add these buttons after the existing ones:
+Find the `model-buttons` section (around line 2XX) and add these buttons after the existing ones:
 
 ```html
 <button class="model-btn" data-model="@cf/google/gemma-7b-it-lora">
