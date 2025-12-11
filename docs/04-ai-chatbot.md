@@ -120,8 +120,12 @@ This file is in the root of your project folder (not inside src/).
 
 ### 2.2 Steps for via Cloudflare dashboard
 
-**Add binding to your worker. Go to Workers & Pages > my-ai-chat > Bindings > Add binding > Workers AI > Add Binding**
+> **Important:** You must deploy your Worker first before it appears in the dashboard. Run `npx wrangler deploy` first, then follow these steps.
+
+**Go to: Workers & Pages > my-ai-chat > Settings > Bindings > Add > Workers AI**
 - Variable name: `AI`
+
+**Click Save**
 
 ---
 

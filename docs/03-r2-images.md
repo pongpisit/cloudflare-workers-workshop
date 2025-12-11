@@ -114,13 +114,15 @@ This file is in the root of your project folder (not inside src/).
 
 ### 3.2 Steps for via Cloudflare dashboard
 
-**Go to: Workers & Pages > my-gallery > Bindings > Add binding > R2 bucket > Add Binding**
+> **Important:** You must deploy your Worker first before it appears in the dashboard. Run `npx wrangler deploy` first, then follow these steps.
+
+**Go to: Workers & Pages > my-gallery > Settings > Bindings > Add > R2 bucket**
 
 **Fill in the form:**
 - Variable name: `BUCKET`
-- Bucket name: `my-photos`
+- R2 bucket: Select `my-photos`
 
-**Deploy :rocket:**
+**Click Save**
 
 ---
 
@@ -507,11 +509,16 @@ Your database_id will be different from the example above.
 
 #### 2.2 Steps for via Cloudflare dashboard
 
-**Create D1 database. Go to: Storage & databases* >D1 SQL database > Create Databse >**
+> **Important:** You must deploy your Worker first before it appears in the dashboard. Run `npx wrangler deploy` first, then follow these steps.
 
-**Add binding to your worker. Go to Workers & Pages > my-gallery > Bindings > Add binding > D1 database > Add Binding**
-- Variable name: `MY_PHOTOS_DB`
+**Create D1 database: Go to Storage & databases > D1 SQL database > Create Database**
 - Database name: `my-photos-db`
+
+**Add binding to your worker: Go to Workers & Pages > my-gallery > Settings > Bindings > Add > D1 database**
+- Variable name: `MY_PHOTOS_DB`
+- D1 database: Select `my-photos-db`
+
+**Click Save**
 
 ---
 
