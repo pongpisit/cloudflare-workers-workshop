@@ -33,10 +33,10 @@ R2 is Cloudflare's object storage service. You can store files like:
 > [!NOTE]  
 > For those following alone via Clouddflare dashboard, you may create a new application.
 
-**Open PowerShell:**
+**Open CMD or PowerShell:**
 
-```powershell
-cd $HOME\Documents\cloudflare-projects
+```cmd
+cd %USERPROFILE%\Documents\cloudflare-projects
 ```
 
 ```powershell

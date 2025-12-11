@@ -25,10 +25,10 @@ A complete app combining all workshop modules:
 
 ### Step 1: Clone the Project
 
-**Open PowerShell:**
+**Open CMD or PowerShell:**
 
-```powershell
-cd $HOME\Documents\cloudflare-projects
+```cmd
+cd %USERPROFILE%\Documents\cloudflare-projects
 ```
 
 ```powershell

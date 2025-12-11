@@ -63,10 +63,10 @@ Workers AI lets you run AI models on Cloudflare's servers. You can:
 
 ## Step 1: Create a New Project
 
-**Open PowerShell:**
+**Open CMD or PowerShell:**
 
-```powershell
-cd $HOME\Documents\cloudflare-projects
+```cmd
+cd %USERPROFILE%\Documents\cloudflare-projects
 ```
 
 ```powershell

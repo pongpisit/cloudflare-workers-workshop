@@ -19,10 +19,10 @@ In this module, you will learn the basics of Cloudflare Workers step by step.
 
 ## Step 1: Create a New Project
 
-**Open PowerShell:**
+**Open CMD or PowerShell:**
 
 1. Press **Windows key + R**
-2. Type `powershell` and press **Enter**
+2. Type `cmd` or `powershell` and press **Enter**
 
 **Run these commands:**
 

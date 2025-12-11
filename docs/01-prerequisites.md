@@ -108,10 +108,10 @@ v20.10.0
 
 Wrangler is Cloudflare's tool for creating and managing Workers.
 
-### 3.1 Open PowerShell
+### 3.1 Open CMD or PowerShell
 
 1. Press **Windows key + R** on your keyboard
-2. Type `powershell` and press **Enter**
+2. Type `cmd` or `powershell` and press **Enter**
 
 ### 3.2 Install Wrangler
 
