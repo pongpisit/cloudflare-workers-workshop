@@ -53,8 +53,8 @@ npx wrangler r2 bucket create my-app-media
 
 ### Step 4: Deploy
 
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 **Done!** Open the URL shown and enjoy your app!
@@ -671,8 +671,8 @@ function getImageGenPage() {
 
 ### Step 7: Test Locally
 
-```powershell
-npm run dev -- --remote
+```cmd
+npx wrangler dev --remote
 ```
 
 **Open:** http://localhost:8787
@@ -681,8 +681,8 @@ npm run dev -- --remote
 
 **Stop server (Ctrl + C), then:**
 
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 **Done!**
@@ -758,8 +758,8 @@ npx wrangler r2 bucket create my-app-media
 ### "AI error"
 
 Make sure you're using `--remote` flag:
-```powershell
-npm run dev -- --remote
+```cmd
+npx wrangler dev --remote
 ```
 
 ### "Not logged in"
@@ -805,8 +805,8 @@ You now have a complete Cloudflare app combining everything from the workshop:
 
 | Command | What It Does |
 |---------|--------------|
-| `npm run dev -- --remote` | Run locally with AI |
-| `npm run deploy` | Deploy to internet |
+| `npx wrangler dev --remote` | Run locally with AI |
+| `npx wrangler deploy` | Deploy to internet |
 | `wrangler tail` | View live logs |
 | `npx wrangler r2 bucket list` | List your buckets |
 

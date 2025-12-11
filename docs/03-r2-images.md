@@ -199,8 +199,8 @@ Delete:   DELETE /files/filename.txt
 ## Step 5: Test R2 Operations
 
 **Start the local server:**
-```powershell
-npm run dev
+```cmd
+npx wrangler dev
 ```
 
 **Open your browser:**
@@ -460,8 +460,8 @@ You will see JSON data of all your images.
 **Stop the local server** (Ctrl + C)
 
 **Deploy:**
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 Your image gallery is now live on the internet!
@@ -750,8 +750,8 @@ async function showFeed(env) {
 - [ ] Saved both files
 
 **Start the local server:**
-```powershell
-npm run dev
+```cmd
+npx wrangler dev
 ```
 
 **Open your browser:**
@@ -796,8 +796,8 @@ You should see: `Executed 1 command`
 
 **Step 6b: Deploy the Worker**
 
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 Your app is now live on the internet!
@@ -820,7 +820,7 @@ This means `env.MY_PHOTOS_DB` is not defined. Check these:
 
 The database table was not created. This should auto-create, but if it doesn't:
 1. Stop the server (Ctrl + C)
-2. Restart with `npm run dev`
+2. Restart with `npx wrangler dev`
 3. Refresh the browser
 
 ---

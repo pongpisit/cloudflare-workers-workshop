@@ -32,7 +32,7 @@ Building AI apps used to be hard. You needed:
 | Rent GPU servers ($100+/month) | Free tier included |
 | Install ML frameworks | Just add `"ai": { "binding": "AI" }` |
 | Manage API keys | Already authenticated |
-| Complex deployment | One command: `npm run deploy` |
+| Complex deployment | One command: `npx wrangler deploy` |
 | Worry about scaling | Auto-scales globally |
 
 **The magic line of code:**
@@ -486,9 +486,9 @@ const HTML_PAGE = `
 
 ## Step 4: Test Your AI Chatbot
 
-**In PowerShell, run:**
-```powershell
-npm run dev -- --remote
+**In CMD or PowerShell, run:**
+```cmd
+npx wrangler dev --remote
 ```
 
 > **Note:** We use `--remote` because AI models run on Cloudflare's servers.
@@ -540,8 +540,8 @@ http://localhost:8787
 **Stop the local server** (press Ctrl + C)
 
 **Deploy:**
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 **Share the URL with friends!**
@@ -867,8 +867,8 @@ const HTML = `<!DOCTYPE html>
 
 ### Challenge Step 3: Test It
 
-```powershell
-npm run dev -- --remote
+```cmd
+npx wrangler dev --remote
 ```
 
 Open http://localhost:8787 and try:
@@ -878,8 +878,8 @@ Open http://localhost:8787 and try:
 
 ### Challenge Step 4: Deploy
 
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 ### What You Built
@@ -931,8 +931,8 @@ You just created an AI-powered image description app with:
 
 | Command | What It Does |
 |---------|--------------|
-| `npm run dev -- --remote` | Run locally with AI |
-| `npm run deploy` | Deploy to internet |
+| `npx wrangler dev --remote` | Run locally with AI |
+| `npx wrangler deploy` | Deploy to internet |
 
 ---
 

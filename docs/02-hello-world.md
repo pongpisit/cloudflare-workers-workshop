@@ -82,9 +82,9 @@ export default {
 
 ## Step 3: Test Your Worker Locally
 
-**In PowerShell, run:**
-```powershell
-npm run dev
+**In CMD or PowerShell, run:**
+```cmd
+npx wrangler dev
 ```
 
 **You will see:**
@@ -263,8 +263,8 @@ You should see a styled HTML page!
 **Stop the local server** (press Ctrl + C in PowerShell)
 
 **Deploy to the internet:**
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 **You will see:**
@@ -373,8 +373,8 @@ export default {
 ```
 
 **Save and test:**
-```powershell
-npm run dev
+```cmd
+npx wrangler dev
 ```
 
 **Open:** http://localhost:8787
@@ -387,8 +387,8 @@ You now have a personal profile page! Customize it by changing:
 - The links
 
 **Deploy when ready:**
-```powershell
-npm run deploy
+```cmd
+npx wrangler deploy
 ```
 
 ---
@@ -423,8 +423,8 @@ npm run deploy
 | Command | What It Does |
 |---------|--------------|
 | `npm create cloudflare@latest -- name` | Create project |
-| `npm run dev` | Run locally |
-| `npm run deploy` | Deploy to internet |
+| `npx wrangler dev` | Run locally |
+| `npx wrangler deploy` | Deploy to internet |
 | Ctrl + C | Stop server |
 
 ---
